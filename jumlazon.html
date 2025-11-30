@@ -7,43 +7,28 @@
     <link rel="stylesheet" href="styles/jumlazon.css" />
   </head>
   <body class="bg-gray-100">
-    <header class="bg-gray-900 text-white p-4">
-      <div class="container mx-4 px-4 py-3">
-        <div class="flex justify-between items-center">
-          <!-- Logo -->
-          <div class="flex items-center">
-            <a href="#" class="flex items-center"
-              ><span class="text-2xl font-bold"
-                >Jumla<span class="text-yellow-300">zon</span></span
-              ></a
-            >
+    <header class="bg-gray-900 text-white">
+      <!-- Top Row: Logo, Hamburger, Search Icon, Cart -->
+      <div class="container mx-auto px-4 py-3">
+        <div class="flex items-center justify-between">
+          <!-- Left: Hamburger + Logo -->
+          <div class="flex items-center space-x-4">
+            <!-- Hamburger Menu Button -->
+            <button class="md:hidden text-white">☰</button>
+            <!-- Logo -->
+            <a href="#" class="flex items-center">
+              <span class="text-2xl font-bold">
+                Jumla<span class="text-yellow-300">zon</span>
+              </span>
+            </a>
           </div>
 
-          <!-- Search Bar -->
-          <div class="hidden md:flex flex-1 max-w-2xl mx-4">
-            <div class="flex w-full">
-              <input
-                type="text"
-                class="w-full bg-gray-700 px-4 py-2 rounded-l-lg focus:outline-none"
-                placeholder="Search for products..."
-              />
-              <button
-                class="bg-blue-500 text-white px-4 py-2 rounded-r-lg hover:bg-blue-600"
-              >
-                Search
-              </button>
-            </div>
-          </div>
+          <!-- Right: Search Icon + Cart -->
+          <div class="flex items-center space-x-4">
+            <!-- Search Icon (Mobile) -->
+            <button class="md:hidden text-white">🔍</button>
 
-          <!-- Right Side -->
-          <div class="flex items-center space-x-6">
-            <div class="hidden md:inline">
-              <a href="" class="flex flex-col hover:underline">
-                <span class="text-xs">Returns</span>
-                <span class="text-sm font-bold">& Orders</span>
-              </a>
-            </div>
-
+            <!-- Cart -->
             <div class="relative">
               <a href="#" class="flex items-center hover:underline">
                 🛒
@@ -51,25 +36,43 @@
                   class="absolute -top-3 -right-2 bg-orange-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold"
                   >3</span
                 >
-                <span class="inline ml-1 text-sm font-bold">Cart</span>
+                <span class="hidden md:inline ml-1 text-sm font-bold"
+                  >Cart</span
+                >
               </a>
             </div>
           </div>
+        </div>
 
-          <!-- Mobile Search Bar -->
-          <div class="md:hidden mt-3">
-            <div class="flex">
-              <input
-                type="text"
-                placeholder="Search for products"
-                class="w-full bg-gray-700 px-4 py-2 rounded-l-lg focus:outline-none"
-              />
-              <button
-                class="bg-blue-500 text-white px-4 py-2 rounded-r-lg hover:bg-blue-600"
-              >
-                🔍
-              </button>
-            </div>
+        <!-- Mobile Search Bar (Hidden by default) -->
+        <div class="md:hidden mt-3 hidden" id="mobileSearch">
+          <div class="flex">
+            <input
+              type="text"
+              placeholder="Search for products..."
+              class="w-full bg-gray-700 px-4 py-2 rounded-l-lg focus:outline-none"
+            />
+            <button
+              class="bg-blue-500 text-white px-4 py-2 rounded-r-lg hover:bg-blue-600"
+            >
+              Search
+            </button>
+          </div>
+        </div>
+
+        <!-- Desktop Search Bar -->
+        <div class="hidden md:flex flex-1 max-w-2xl mx-auto mt-3">
+          <div class="flex w-full">
+            <input
+              type="text"
+              class="w-full bg-gray-700 px-4 py-2 rounded-l-lg focus:outline-none"
+              placeholder="Search for products..."
+            />
+            <button
+              class="bg-blue-500 text-white px-4 py-2 rounded-r-lg hover:bg-blue-600"
+            >
+              Search
+            </button>
           </div>
         </div>
       </div>
