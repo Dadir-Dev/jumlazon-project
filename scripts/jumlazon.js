@@ -46,6 +46,53 @@ const products = [
   },
 ];
 
+// ===== DOM Elements =====
+const domElements = {
+  productsContainer: document.querySelector("[data-products-container]"),
+};
+
+console.log(domElements.productsContainer);
+
+function renderProducts() {
+  domElements.productsContainer.innerHTML = products
+    .map(
+      (product) => `
+  <div
+          class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition duration-300"
+        >
+          <div class="p-4">
+            <div class="flex justify-center mb-4">
+              <img
+                src="${product.image}"
+                alt="${product.name}"
+                class="h-48 object-contain"
+              />
+            </div>
+            <h3 class="font-medium mb-2 line-clamp-2">${product.name}</h3>
+            <div class="flex items-center mb-2">
+              <div class="flex text-yellow-400"></div>
+              <span class="text-blue-600 text-sm ml-1">${product.reviewCount}</span>
+            </div>
+            <div class="mb-4">
+              <span class="text-lg font-bold">$${product.price}</span>
+              <span class="text-sm text-gray-500 line-through ml-2"
+                >$${product.originalPrice}</span
+              >
+            </div>
+
+            <button
+              class="w-full bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-bold py-2 rounded-lg transition duration-300"
+            >
+              Add to Cart
+            </button>
+          </div>
+        </div>
+  `
+    )
+    .join("");
+}
+
+renderProducts();
 // Mobile search toggle functionality
 document.addEventListener("DOMContentLoaded", function () {
   const searchButton = document.querySelector(".js-search-toggle");
