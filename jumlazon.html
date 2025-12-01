@@ -5,6 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Jumlazon - Modern E-Commerce</title>
     <link rel="stylesheet" href="styles/jumlazon.css" />
+
+    <style>
+      .line-clamp-2 {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+    </style>
   </head>
   <body class="bg-gray-100">
     <header class="bg-gray-900 text-white">
@@ -23,7 +32,7 @@
             </a>
           </div>
           <!-- Desktop Search Bar -->
-          <div class="hidden md:flex flex-1 max-w-2xl mx-auto mt-3">
+          <div class="hidden md:flex flex-1 max-w-2xl mx-4">
             <div class="flex w-full">
               <input
                 type="text"
@@ -83,7 +92,9 @@
         class="bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg p-6 mb-8 text-white"
       >
         <div class="max-w-xl">
-          <h1 class="text-3xl font-bold mb-4">Welcome to Jumlazon</h1>
+          <h1 class="text-3xl font-bold mb-4">
+            Welcome to Jumla<span class="text-yellow-300">zon</span>
+          </h1>
           <p class="text-lg mb-6">
             Discover a world of fashion, electronics, and more at Jumlazon.
           </p>
@@ -98,7 +109,7 @@
       <!-- Products Grid -->
       <h2 class="text-2xl font-bold mb-6">Featured Products</h2>
       <div
-        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
       >
         <!-- product card 1 -->
         <div
@@ -163,6 +174,99 @@
               Add to Cart
             </button>
           </div>
+        </div>
+
+        <!-- product card 3 -->
+        <div
+          class="product-card bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition duration-300"
+        >
+          <div class="p-4">
+            <div class="flex justify-center mb-4">
+              <img
+                src="https://images.unsplash.com/photo-1666358084687-14347fbf364c?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                alt="T-Shirts"
+                class="product-image h-48 w-full object-contain"
+              />
+            </div>
+            <h3 class="line-clamp-2 font-medium mb-2">
+              Adults Plain Cotton T-Shirt - 2 Pack
+            </h3>
+
+            <div class="flex items-center mb-2">
+              <div class="flex text-yellow-400">⭐⭐⭐⭐⭐</div>
+              <span class="text-blue-600 text-sm ml-1">56</span>
+            </div>
+
+            <div class="mb-4">
+              <span class="text-lg font-bold">$7.99</span>
+              <span class="text-sm text-gray-500 line-through ml-2">$9.99</span>
+            </div>
+
+            <button
+              class="add-to-cart w-full bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-bold py-2 rounded-lg transition duration-300"
+            >
+              Add to Cart
+            </button>
+          </div>
+        </div>
+
+        <!-- product card 4 -->
+        <div
+          class="product-card bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition duration-300"
+        >
+          <div class="p-4">
+            <div class="flex justify-center mb-4">
+              <img
+                src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+                alt="Headphones"
+                class="product-image h-48 w-full object-contain"
+              />
+            </div>
+            <h3 class="line-clamp-2 font-medium mb-2">
+              Wireless Bluetooth Headphones with Noise Cancellation
+            </h3>
+
+            <div class="flex items-center mb-2">
+              <div class="flex text-yellow-400">⭐⭐⭐⭐⭐</div>
+              <span class="text-blue-600 text-sm ml-1">243</span>
+            </div>
+
+            <div class="mb-4">
+              <span class="text-lg font-bold">$89.99</span>
+              <span class="text-sm text-gray-500 line-through ml-2"
+                >$129.99</span
+              >
+            </div>
+
+            <button
+              class="add-to-cart w-full bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-bold py-2 rounded-lg transition duration-300"
+            >
+              Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Newsletter Section -->
+      <div
+        class="mt-12 bg-gradient-to-r from-gray-800 to-gray-900 rounded-lg p-8 text-white text-center"
+      >
+        <h2 class="text-2xl font-bold mb-4">Stay Updated</h2>
+        <p class="mb-6 max-w-lg mx-auto">
+          Subscribe to our newsletter and be the first to know about exclusive
+          deals and new product launches.
+        </p>
+        <div class="flex max-w-md mx-auto">
+          <input
+            type="email"
+            placeholder="Your email address"
+            class="flex-1 px-4 py-3 rounded-l text-gray-800 focus:outline-none"
+          />
+          <button
+            class="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-bold px-6 rounded-r transition duration-300"
+          >
+            Subscribe
+          </button>
         </div>
       </div>
     </main>
