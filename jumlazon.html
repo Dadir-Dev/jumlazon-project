@@ -41,7 +41,7 @@
           <!-- Right: Search Icon + Cart -->
           <div class="flex items-center space-x-4">
             <!-- Search Icon (Mobile) -->
-            <button class="md:hidden text-white">🔍</button>
+            <button class="js-search-toggle md:hidden text-white">🔍</button>
 
             <!-- Cart -->
             <div class="relative">
@@ -83,9 +83,7 @@
     <script>
       // Mobile search toggle functionality
       document.addEventListener("DOMContentLoaded", function () {
-        const searchButton = document.querySelector(
-          "button.md\\:hidden.text-white"
-        );
+        const searchButton = document.querySelector(".js-search-toggle");
         const mobileSearch = document.getElementById("mobileSearch");
 
         searchButton.addEventListener("click", function () {
