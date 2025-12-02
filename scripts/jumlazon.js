@@ -5,8 +5,10 @@ const products = [
     name: "Black and Gray Athletic Cotton Socks - 6 Pairs",
     price: 10.9,
     originalPrice: 12.99,
-    rating: 4.5,
-    reviewCount: 87,
+    rating: {
+      stars: 4.5,
+      count: 87,
+    },
     image:
       "https://images.unsplash.com/photo-1547949003-9792a18a2601?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
     category: "Clothing",
@@ -16,8 +18,10 @@ const products = [
     name: "Intermediate Size Basketball",
     price: 20.95,
     originalPrice: null,
-    rating: 4.0,
-    reviewCount: 127,
+    rating: {
+      stars: 4,
+      count: 127,
+    },
     image:
       "https://images.unsplash.com/photo-1546519638-68e109498ffc?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
     category: "Sports",
@@ -27,8 +31,10 @@ const products = [
     name: "Adults Plain Cotton T-Shirt - 2 Pack",
     price: 7.99,
     originalPrice: 9.99,
-    rating: 4.5,
-    reviewCount: 56,
+    rating: {
+      stars: 5,
+      count: 56,
+    },
     image:
       "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
     category: "Clothing",
@@ -38,8 +44,10 @@ const products = [
     name: "Wireless Bluetooth Headphones with Noise Cancellation",
     price: 89.99,
     originalPrice: 129.99,
-    rating: 5.0,
-    reviewCount: 243,
+    rating: {
+      stars: 3.5,
+      count: 243,
+    },
     image:
       "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
     category: "Electronics",
@@ -51,8 +59,7 @@ const domElements = {
   productsContainer: document.querySelector("[data-products-container]"),
 };
 
-console.log(domElements.productsContainer);
-
+// ===== Render Products =====
 function renderProducts() {
   domElements.productsContainer.innerHTML = products
     .map(
@@ -70,14 +77,24 @@ function renderProducts() {
             </div>
             <h3 class="font-medium mb-2 line-clamp-2">${product.name}</h3>
             <div class="flex items-center mb-2">
-              <div class="flex text-yellow-400"></div>
-              <span class="text-blue-600 text-sm ml-1">${product.reviewCount}</span>
+              <img src="Images/ratings/rating-${
+                product.rating.stars * 10
+              }.png" class="h-5 w-auto" alt="${
+        product.rating.stars
+      } stars rating"/>
+              <span class="text-blue-600 text-sm ml-1">${
+                product.rating.count
+              }</span>
             </div>
             <div class="mb-4">
               <span class="text-lg font-bold">$${product.price}</span>
-              <span class="text-sm text-gray-500 line-through ml-2"
+              ${
+                product.originalPrice
+                  ? `<span class="text-sm text-gray-500 line-through ml-2"
                 >$${product.originalPrice}</span
-              >
+              >`
+                  : ""
+              }
             </div>
 
             <button
