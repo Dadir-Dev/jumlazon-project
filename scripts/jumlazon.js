@@ -1,12 +1,8 @@
 import { products } from "../data/products.js";
-// ===== DOM Elements =====
-const domElements = {
-  productsContainer: document.querySelector("[data-products-container]"),
-};
 
 // ===== Render Products =====
-function renderProducts() {
-  domElements.productsContainer.innerHTML = products
+function renderProducts(container) {
+  container.innerHTML = products
     .map(
       (product) => `
   <div
@@ -45,7 +41,9 @@ function renderProducts() {
             </div>
 
             <button
-              class="w-full bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-bold py-2 rounded-lg transition duration-300"
+              class="w-full bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-bold py-2 rounded-lg transition duration-300" data-add-to-cart data-product-id="${
+                product.id
+              }"
             >
               Add to Cart
             </button>
@@ -56,7 +54,36 @@ function renderProducts() {
     .join("");
 }
 
-renderProducts();
+// ===== Initialization & Add to Cart (event delegation) =====
+function init() {
+  const productsContainer = document.querySelector("[data-products-container]");
+  if (!productsContainer) {
+    console.error("[data-products-container] not found");
+    return;
+  }
+
+  renderProducts(productsContainer);
+
+  // Use event delegation so buttons added dynamically respond to clicks
+  productsContainer.addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-add-to-cart]");
+    if (!btn || !productsContainer.contains(btn)) return;
+
+    const id = Number(btn.dataset.productId);
+    const product = products.find((p) => p.id === id);
+    if (!product) return;
+
+    console.log(product, "added to cart");
+    // TODO: integrate with cart logic (localStorage, UI update, etc.)
+  });
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", init);
+} else {
+  init();
+}
+
 // Mobile search toggle functionality
 document.addEventListener("DOMContentLoaded", function () {
   const searchButton = document.querySelector(".js-search-toggle");
