@@ -1,4 +1,5 @@
 import { products } from "../data/products.js";
+import { cart } from "../data/cart.js";
 
 // ===== Render Products =====
 function renderProducts(container) {
@@ -73,8 +74,19 @@ function init() {
     const product = products.find((p) => p.id === id);
     if (!product) return;
 
-    console.log(product, "added to cart");
-    // TODO: integrate with cart logic (localStorage, UI update, etc.)
+    //console.log(product, "added to cart");
+    //cart logic
+    const matchingItem = cart.find((item) => item.productId === id);
+    if (matchingItem) {
+      matchingItem.quantity++;
+    } else {
+      cart.push({
+        productId: id,
+        quantity: 1,
+      });
+    }
+
+    console.log(cart);
   });
 }
 
