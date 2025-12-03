@@ -73,21 +73,23 @@ function init() {
     const id = Number(btn.dataset.productId);
     const product = products.find((p) => p.id === id);
     if (!product) return;
-
-    //console.log(product, "added to cart");
-    //cart logic
-    const matchingItem = cart.find((item) => item.productId === id);
-    if (matchingItem) {
-      matchingItem.quantity++;
-    } else {
-      cart.push({
-        productId: id,
-        quantity: 1,
-      });
-    }
-
-    console.log(cart);
+    addToCart(id);
   });
+}
+
+function addToCart(productId) {
+  const matchingItem = cart.find((item) => item.productId === productId);
+  if (matchingItem) {
+    matchingItem.quantity++;
+  } else {
+    cart.push({
+      productId: productId,
+      quantity: 1,
+    });
+  }
+
+  console.log(cart);
+  //console.log(product, "added to cart");
 }
 
 if (document.readyState === "loading") {
