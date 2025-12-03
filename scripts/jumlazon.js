@@ -64,8 +64,9 @@ function init() {
   }
 
   renderProducts(productsContainer);
+  renderCartQuantity();
 
-  // Use event delegation so buttons added dynamically respond to clicks
+  // SINGLE event listener for ALL add-to-cart buttons (current and future)
   productsContainer.addEventListener("click", (e) => {
     const btn = e.target.closest("[data-add-to-cart]");
     if (!btn || !productsContainer.contains(btn)) return;
@@ -90,7 +91,26 @@ function addToCart(productId) {
 
   console.log(cart);
   //console.log(product, "added to cart");
+  updateCart();
 }
+
+function renderCartQuantity() {
+  const cartCountElement = document.querySelector("[data-cart-quantity]");
+  if (!cartCountElement) {
+    console.error("[data-cart-quantity] not found");
+    return; // Exit if element not found
+  }
+  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+  cartCountElement.textContent = totalItems;
+}
+
+function updateCart() {
+  // This will eventually update multiple things
+  renderCartQuantity();
+}
+
+// // ===== Initialization =====
+// updateCartCount();
 
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", init);
