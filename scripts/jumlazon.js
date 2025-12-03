@@ -99,18 +99,20 @@ function addToCart(productId) {
   const matchingItem = cart.find((item) => item.productId === productId);
   // If it is, increment quantity
   // select the quantity from the dropdown
-  const dropdownQuantity = Number(
-    document.querySelector(`[data-dropwdown-quantity-${productId}]`).value
-  );
+  const dropdownQuantity = document.querySelector(
+    `[data-dropwdown-quantity-${productId}]`
+  ).value;
+  if (!dropdownQuantity) return;
 
+  const quantity = Number(dropdownQuantity);
   if (matchingItem) {
-    matchingItem.quantity += dropdownQuantity;
+    matchingItem.quantity += quantity;
   }
   // If it's not, add it to the cart
   else {
     cart.push({
-      productId: productId,
-      quantity: dropdownQuantity,
+      productId,
+      quantity,
     });
   }
 
