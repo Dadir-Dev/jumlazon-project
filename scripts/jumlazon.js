@@ -41,7 +41,9 @@ function renderProducts(container) {
               }
             </div>
             <div>
-            <select class="w-2/5 bg-gray-500 border border-gray-300 rounded-md px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-400" data-dropwdown-quantity>
+            <select class="w-2/5 bg-gray-500 border border-gray-300 rounded-md px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-400" data-dropwdown-quantity-${
+              product.id
+            }>
               <option value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -98,8 +100,9 @@ function addToCart(productId) {
   // If it is, increment quantity
   // select the quantity from the dropdown
   const dropdownQuantity = Number(
-    document.querySelector("[data-dropwdown-quantity]").value
+    document.querySelector(`[data-dropwdown-quantity-${productId}]`).value
   );
+
   if (matchingItem) {
     matchingItem.quantity += dropdownQuantity;
   }
@@ -112,7 +115,6 @@ function addToCart(productId) {
   }
 
   console.log(cart);
-  //console.log(product, "added to cart");
   updateCart();
 }
 
