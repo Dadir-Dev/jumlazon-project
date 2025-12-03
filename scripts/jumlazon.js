@@ -40,6 +40,20 @@ function renderProducts(container) {
                   : ""
               }
             </div>
+            <div>
+            <select class="w-2/5 bg-gray-500 border border-gray-300 rounded-md px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-400" data-dropwdown-quantity>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+            </select>
+            </div>
 
             <button
               class="w-full bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-bold py-2 rounded-lg transition duration-300" data-add-to-cart data-product-id="${
@@ -79,13 +93,21 @@ function init() {
 }
 
 function addToCart(productId) {
+  // Check if product is already in cart
   const matchingItem = cart.find((item) => item.productId === productId);
+  // If it is, increment quantity
+  // select the quantity from the dropdown
+  const dropdownQuantity = Number(
+    document.querySelector("[data-dropwdown-quantity]").value
+  );
   if (matchingItem) {
-    matchingItem.quantity++;
-  } else {
+    matchingItem.quantity += dropdownQuantity;
+  }
+  // If it's not, add it to the cart
+  else {
     cart.push({
       productId: productId,
-      quantity: 1,
+      quantity: dropdownQuantity,
     });
   }
 
@@ -100,8 +122,8 @@ function renderCartQuantity() {
     console.error("[data-cart-quantity] not found");
     return; // Exit if element not found
   }
-  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-  cartCountElement.textContent = totalItems;
+  const TotalcartQuantity = cart.reduce((sum, item) => sum + item.quantity, 0);
+  cartCountElement.textContent = TotalcartQuantity;
 }
 
 function updateCart() {
