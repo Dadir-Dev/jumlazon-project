@@ -41,7 +41,7 @@ function renderProducts(container) {
               }
             </div>
             <div>
-            <select class="w-2/5 bg-gray-500 border border-gray-300 rounded-md px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-400" data-dropwdown-quantity-${
+            <select class="w-1/5 bg-gray-100 border border-gray-300 rounded-md shadow-md px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-yellow-400" data-dropwdown-quantity-${
               product.id
             }>
               <option value="1">1</option>
@@ -57,6 +57,9 @@ function renderProducts(container) {
             </select>
             </div>
 
+            <div class="text-center text-green-600 opacity-0" data-added-message-${
+              product.id
+            }>✅Added</div>
             <button
               class="w-full bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-bold py-2 rounded-lg transition duration-300" data-add-to-cart data-product-id="${
                 product.id
@@ -82,6 +85,8 @@ function init() {
   renderProducts(productsContainer);
   renderCartQuantity();
 
+  const addedMessageTimeouts = {};
+
   // SINGLE event listener for ALL add-to-cart buttons (current and future)
   productsContainer.addEventListener("click", (e) => {
     const btn = e.target.closest("[data-add-to-cart]");
@@ -91,6 +96,28 @@ function init() {
     const product = products.find((p) => p.id === id);
     if (!product) return;
     addToCart(id);
+    // show added to cart message
+    // The added-message element is a sibling inside the product card, not a child of the button,
+    // so query from the button's parent/card container instead of from the button itself.
+
+    const card = btn.closest(".p-4") || btn.parentElement;
+    const addedMsg = card && card.querySelector(`[data-added-message-${id}]`);
+    if (addedMsg) {
+      // // If timeout exists, clear it first
+      if (addedMessageTimeouts[id]) {
+        clearTimeout(addedMessageTimeouts[id]);
+        addedMessageTimeouts[id] = null;
+      }
+      // show the message
+      addedMsg.classList.remove("opacity-0");
+
+      // Set a new timeout to hide the message after 1 second
+      addedMessageTimeouts[id] = setTimeout(() => {
+        addedMsg.classList.add("opacity-0");
+      }, 1000);
+    } else {
+      console.warn(`added message element for product ${id} not found`);
+    }
   });
 }
 
