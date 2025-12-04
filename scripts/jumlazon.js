@@ -85,6 +85,7 @@ function init() {
   renderProducts(productsContainer);
   renderCartQuantity();
 
+  // Store all timeouts here (outside the event listener)
   const addedMessageTimeouts = {};
 
   // SINGLE event listener for ALL add-to-cart buttons (current and future)
@@ -97,8 +98,7 @@ function init() {
     if (!product) return;
     addToCart(id);
     // show added to cart message
-    // The added-message element is a sibling inside the product card, not a child of the button,
-    // so query from the button's parent/card container instead of from the button itself.
+    // query from the button's parent/card container instead of from the button itself.
 
     const card = btn.closest(".p-4") || btn.parentElement;
     const addedMsg = card && card.querySelector(`[data-added-message-${id}]`);
@@ -180,3 +180,13 @@ document.addEventListener("DOMContentLoaded", function () {
     mobileSearch.classList.toggle("hidden");
   });
 });
+
+function getCartDetails() {
+  return cart.map((cartItem) => {
+    const product = products.find((p) => p.id === cartItem.productId);
+    return {
+      ...cartItem,
+      product: product ? { ...product } : null,
+    };
+  });
+}
