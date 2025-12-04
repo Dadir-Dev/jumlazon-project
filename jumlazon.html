@@ -9,8 +9,13 @@
     <style>
       .line-clamp-2 {
         display: -webkit-box;
-        -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+
+        /* Standard / unprefixed properties for compatibility */
+        line-clamp: 2;
+        box-orient: vertical;
+
         overflow: hidden;
       }
     </style>
