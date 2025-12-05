@@ -158,9 +158,10 @@ function renderCartQuantity() {
   cartCountElement.textContent = TotalcartQuantity;
 }
 
+// Update your updateCart function
 function updateCart() {
-  // This will eventually update multiple things
   renderCartQuantity();
+  renderCart();
 }
 
 // // ===== Initialization =====
