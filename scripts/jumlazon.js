@@ -120,6 +120,37 @@ function init() {
       console.warn(`added message element for product ${id} not found`);
     }
   });
+
+  // Increase/Decrease quantity buttons in cart
+  const cartItemsContainer = document.querySelector(
+    "[data-cart-items-container]"
+  );
+  if (!cartItemsContainer) {
+    console.error("[data-cart-items-container] not found");
+    return;
+  }
+
+  cartItemsContainer.addEventListener("click", (e) => {
+    const increaseBtn = e.target.closest("[data-increase-quantity]");
+    const decreaseBtn = e.target.closest("[data-decrease-quantity]");
+    if (!increaseBtn && !decreaseBtn) return;
+
+    const id = Number(
+      increaseBtn
+        ? increaseBtn.dataset.productId
+        : decreaseBtn.dataset.productId
+    );
+    const item = cart.find((item) => item.productId === id);
+    if (!item) return;
+
+    if (increaseBtn) {
+      item.quantity++;
+    } else if (decreaseBtn && item.quantity > 1) {
+      item.quantity--;
+    }
+
+    updateCart();
+  });
 }
 
 function addToCart(productId) {
