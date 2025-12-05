@@ -120,6 +120,57 @@
         <!-- Product Cards will be dynamically added here -->
       </div>
 
+      <!-- Cart Modal - Initially hidden -->
+      <div
+        id="cartContainer"
+        class="hidden fixed inset-y-0 right-0 w-full max-w-md bg-white shadow-xl z-50 overflow-y-auto"
+      >
+        <div class="p-6">
+          <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold">Your Cart</h2>
+            <button id="closeCart" class="text-gray-500 hover:text-gray-700">
+              <svg
+                class="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </div>
+
+          <!-- Cart items will go here -->
+          <div data-cart-items-container class="space-y-4">
+            <!-- Dynamically populated -->
+          </div>
+
+          <!-- Cart Summary -->
+          <div class="mt-8 border-t pt-6">
+            <div class="flex justify-between text-lg font-bold">
+              <span>Total:</span>
+              <span data-cart-total>$0.00</span>
+            </div>
+            <button
+              class="w-full mt-4 bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-bold py-3 rounded-lg transition duration-300"
+            >
+              Checkout
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Optional: Cart Overlay -->
+      <div
+        id="cartOverlay"
+        class="hidden fixed inset-0 bg-black bg-opacity-50 z-40"
+      ></div>
+
       <!-- Newsletter Section -->
       <div
         class="mt-12 bg-gradient-to-r from-gray-800 to-gray-900 rounded-lg p-8 text-white text-center"
