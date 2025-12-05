@@ -83,7 +83,8 @@ function init() {
   }
 
   renderProducts(productsContainer);
-  renderCartQuantity();
+  updateCart();
+  initCartToggle();
 
   // Store all timeouts here (outside the event listener)
   const addedMessageTimeouts = {};
@@ -264,4 +265,33 @@ function renderCart() {
 
   // Update total price
   cartTotalElement.textContent = `$${totalPrice.toFixed(2)}`;
+
+  console.log(cartItemsContainer);
+}
+
+// Add cart toggle functionality
+function initCartToggle() {
+  const cartButton = document.querySelector("[data-cart-toggle]");
+  const closeCartButton = document.getElementById("closeCart");
+  const cartContainer = document.getElementById("cartContainer");
+  const cartOverlay = document.getElementById("cartOverlay");
+
+  if (!cartButton || !cartContainer) return;
+
+  cartButton.addEventListener("click", () => {
+    cartContainer.classList.remove("hidden");
+    if (cartOverlay) cartOverlay.classList.remove("hidden");
+  });
+
+  closeCartButton.addEventListener("click", () => {
+    cartContainer.classList.add("hidden");
+    if (cartOverlay) cartOverlay.classList.add("hidden");
+  });
+
+  if (cartOverlay) {
+    cartOverlay.addEventListener("click", () => {
+      cartContainer.classList.add("hidden");
+      cartOverlay.classList.add("hidden");
+    });
+  }
 }
