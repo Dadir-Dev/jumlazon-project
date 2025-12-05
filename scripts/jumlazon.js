@@ -151,6 +151,25 @@ function init() {
 
     updateCart();
   });
+
+  // Remove item from cart
+  cartItemsContainer.addEventListener("click", (e) => {
+    const removeBtn = e.target.closest("[data-remove-item]");
+    if (!removeBtn) return;
+
+    const id = Number(removeBtn.dataset.productId);
+    const index = cart.findIndex((item) => item.productId === id);
+    if (index === -1) {
+      console.warn(
+        `Attempted to remove product ${id} but it was not found in cart`
+      );
+      return;
+    }
+
+    // Mutate the imported cart array in-place instead of reassigning the binding
+    cart.splice(index, 1);
+    updateCart();
+  });
 }
 
 function addToCart(productId) {
