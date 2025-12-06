@@ -296,11 +296,15 @@ function renderCart() {
             <div class="flex items-center mt-2">
               <button class="px-3 py-1 border rounded-l" data-decrease-quantity data-product-id="${
                 item.productId
-              }">-</button>
+              }" aria-label="Decrease quantity of ${
+        item.product.name
+      }>-</button>
               <span class="px-4 py-1 border-t border-b">${item.quantity}</span>
               <button class="px-3 py-1 border rounded-r" data-increase-quantity data-product-id="${
                 item.productId
-              }">+</button>
+              }" aria-label="Increase quantity of ${
+        item.product.name
+      }>+</button>
               <button class="ml-4 text-red-600 hover:text-red-800" data-remove-item data-product-id="${
                 item.productId
               }">Remove</button>
