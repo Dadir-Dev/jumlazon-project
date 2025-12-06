@@ -1,5 +1,5 @@
 import { products } from "../data/products.js";
-import { cart } from "../data/cart.js";
+import { cart } from "../data/cartData.js";
 
 // ===== Render Products =====
 function renderProducts(container) {
