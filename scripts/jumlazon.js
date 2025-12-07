@@ -7,6 +7,7 @@ import {
   updateQuantity,
 } from "./cart.js";
 import { renderProducts } from "./products.js";
+import { renderCart } from "./cartUI.js";
 
 // ===== Initialization & Add to Cart (event delegation) =====
 function init() {
@@ -60,9 +61,7 @@ function init() {
   });
 
   // Increase/Decrease quantity buttons in cart
-  const cartItemsContainer = document.querySelector(
-    "[data-cart-items-container]"
-  );
+
   if (!cartItemsContainer) {
     console.error("[data-cart-items-container] not found");
     return;
@@ -106,7 +105,19 @@ function renderCartQuantity() {
 // Update your updateCart function
 function updateCart() {
   renderCartQuantity();
-  renderCart();
+
+  const cartItemsContainer = document.querySelector(
+    "[data-cart-items-container]"
+  );
+  const cartTotalElement = document.querySelector("[data-cart-total]");
+
+  if (!cartItemsContainer || !cartTotalElement) {
+    console.warn("Cart container elements not found for renderCart");
+    return;
+  }
+
+  const cartDetails = getCartDetails();
+  renderCart(cartItemsContainer, cartTotalElement, cartDetails);
 }
 
 // // ===== Initialization =====
@@ -127,85 +138,6 @@ document.addEventListener("DOMContentLoaded", function () {
     mobileSearch.classList.toggle("hidden");
   });
 });
-
-// ===== Cart =====
-
-function renderCart() {
-  const cartItemsContainer = document.querySelector(
-    "[data-cart-items-container]"
-  );
-
-  const cartTotalElement = document.querySelector("[data-cart-total]");
-
-  if (!cartItemsContainer || !cartTotalElement) {
-    console.warn("Cart container element is not found");
-    return;
-  }
-
-  const cartDetails = getCartDetails();
-
-  // If cart is empty
-  if (cartDetails.length === 0) {
-    cartItemsContainer.innerHTML = `
-      <div class="text-center py-8 text-gray-500">
-        Your cart is empty.
-      </div>
-    `;
-    cartTotalElement.textContent = "$0.00";
-    return;
-  }
-
-  // Calculate total price
-  let totalPrice = 0;
-
-  // Render each cart item
-  cartItemsContainer.innerHTML = cartDetails
-    .map((item) => {
-      const itemTotal = item.product.price * item.quantity;
-      totalPrice += itemTotal;
-
-      return `
-        <div class="flex items-center border-b pb-4" data-cart-item-id="${
-          item.productId
-        }">
-          <img 
-            src="${item.product.image}" 
-            alt="${item.product.name}" 
-            class="w-20 h-20 object-contain mr-4"
-          >
-          <div class="flex-1">
-            <h4 class="font-medium">${item.product.name}</h4>
-            <p class="text-gray-600">$${item.product.price.toFixed(2)}</p>
-            <div class="flex items-center mt-2">
-              <button class="px-3 py-1 border rounded-l" data-decrease-quantity data-product-id="${
-                item.productId
-              }" aria-label="Decrease quantity of ${
-        item.product.name
-      }">-</button>
-              <span class="px-4 py-1 border-t border-b">${item.quantity}</span>
-              <button class="px-3 py-1 border rounded-r" data-increase-quantity data-product-id="${
-                item.productId
-              }" aria-label="Increase quantity of ${
-        item.product.name
-      }">+</button>
-              <button class="ml-4 text-red-600 hover:text-red-800" data-remove-item data-product-id="${
-                item.productId
-              }">Remove</button>
-            </div>
-          </div>
-          <div class="text-right">
-            <p class="font-bold">$${itemTotal.toFixed(2)}</p>
-          </div>
-        </div>
-      `;
-    })
-    .join("");
-
-  // Update total price
-  cartTotalElement.textContent = `$${totalPrice.toFixed(2)}`;
-
-  console.log(cartItemsContainer);
-}
 
 // Add cart toggle functionality
 function initCartToggle() {
