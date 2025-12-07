@@ -1,5 +1,6 @@
 import { products } from "../data/products.js";
 import { cart } from "../data/cartData.js";
+import { addToCart, getCartDetails } from "./cart.js";
 
 // ===== Render Products =====
 function renderProducts(container) {
@@ -98,7 +99,11 @@ function init() {
     const id = Number(btn.dataset.productId);
     const product = products.find((p) => p.id === id);
     if (!product) return;
-    addToCart(id);
+    const dropdownQuantity = document.querySelector(
+      `[data-dropwdown-quantity-${id}]`
+    ).value;
+    addToCart(id, dropdownQuantity);
+    updateCart();
     // show added to cart message
     // query from the button's parent/card container instead of from the button itself.
 
@@ -173,33 +178,6 @@ function init() {
   });
 }
 
-function addToCart(productId) {
-  // Check if product is already in cart
-  const matchingItem = cart.find((item) => item.productId === productId);
-  // If it is, increment quantity
-  // select the quantity from the dropdown
-  const dropdownQuantity = document.querySelector(
-    `[data-dropwdown-quantity-${productId}]`
-  ).value;
-  if (!dropdownQuantity) return;
-
-  const quantity = Number(dropdownQuantity);
-  if (matchingItem) {
-    matchingItem.quantity += quantity;
-  }
-  // If it's not, add it to the cart
-  else {
-    cart.push({
-      productId,
-      quantity,
-    });
-  }
-
-  console.log(cart);
-  console.log(getCartDetails());
-  updateCart();
-}
-
 function renderCartQuantity() {
   const cartCountElement = document.querySelector("[data-cart-quantity]");
   if (!cartCountElement) {
@@ -236,16 +214,6 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 // ===== Cart =====
-
-function getCartDetails() {
-  return cart.map((cartItem) => {
-    const product = products.find((p) => p.id === cartItem.productId);
-    return {
-      ...cartItem,
-      product: product ? { ...product } : null,
-    };
-  });
-}
 
 function renderCart() {
   const cartItemsContainer = document.querySelector(
@@ -298,13 +266,13 @@ function renderCart() {
                 item.productId
               }" aria-label="Decrease quantity of ${
         item.product.name
-      }>-</button>
+      }">-</button>
               <span class="px-4 py-1 border-t border-b">${item.quantity}</span>
               <button class="px-3 py-1 border rounded-r" data-increase-quantity data-product-id="${
                 item.productId
               }" aria-label="Increase quantity of ${
         item.product.name
-      }>+</button>
+      }">+</button>
               <button class="ml-4 text-red-600 hover:text-red-800" data-remove-item data-product-id="${
                 item.productId
               }">Remove</button>
