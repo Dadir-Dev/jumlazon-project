@@ -64,7 +64,7 @@ function renderProducts(container) {
               class="w-full bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-bold py-2 rounded-lg transition duration-300" data-add-to-cart data-product-id="${
                 product.id
               }"
-              aria-label="Add ${product.name} to cart
+              aria-label="Add ${product.name} to cart"
             >
               Add to Cart
             </button>
