@@ -40,3 +40,14 @@ export function getCartDetails() {
     };
   });
 }
+
+export function updateQuantity(productId, change) {
+  const item = cart.find((item) => item.productId === productId);
+  if (!item) return;
+
+  if (change === 1) {
+    item.quantity++;
+  } else if (change === -1 && item.quantity > 1) {
+    item.quantity--;
+  }
+}

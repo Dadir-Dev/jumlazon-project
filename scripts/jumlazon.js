@@ -1,6 +1,11 @@
 import { products } from "../data/products.js";
 import { cart } from "../data/cartData.js";
-import { addToCart, getCartDetails, removeFromCart } from "./cart.js";
+import {
+  addToCart,
+  getCartDetails,
+  removeFromCart,
+  updateQuantity,
+} from "./cart.js";
 
 // ===== Render Products =====
 function renderProducts(container) {
@@ -146,15 +151,7 @@ function init() {
         ? increaseBtn.dataset.productId
         : decreaseBtn.dataset.productId
     );
-    const item = cart.find((item) => item.productId === id);
-    if (!item) return;
-
-    if (increaseBtn) {
-      item.quantity++;
-    } else if (decreaseBtn && item.quantity > 1) {
-      item.quantity--;
-    }
-
+    updateQuantity(id, increaseBtn ? 1 : -1);
     updateCart();
   });
 
