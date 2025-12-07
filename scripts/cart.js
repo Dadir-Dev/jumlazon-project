@@ -24,7 +24,7 @@ export function removeFromCart(productId) {
   const index = cart.findIndex((item) => item.productId === productId);
   if (index === -1) {
     console.warn(
-      `Attempted to remove product ${id} but it was not found in cart`
+      `Attempted to remove product ${productId} but it was not found in cart`
     );
     return;
   }
