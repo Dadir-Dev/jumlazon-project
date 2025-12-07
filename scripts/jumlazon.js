@@ -1,6 +1,6 @@
 import { products } from "../data/products.js";
 import { cart } from "../data/cartData.js";
-import { addToCart, getCartDetails } from "./cart.js";
+import { addToCart, getCartDetails, removeFromCart } from "./cart.js";
 
 // ===== Render Products =====
 function renderProducts(container) {
@@ -164,16 +164,7 @@ function init() {
     if (!removeBtn) return;
 
     const id = Number(removeBtn.dataset.productId);
-    const index = cart.findIndex((item) => item.productId === id);
-    if (index === -1) {
-      console.warn(
-        `Attempted to remove product ${id} but it was not found in cart`
-      );
-      return;
-    }
-
-    // Mutate the imported cart array in-place instead of reassigning the binding
-    cart.splice(index, 1);
+    removeFromCart(id);
     updateCart();
   });
 }

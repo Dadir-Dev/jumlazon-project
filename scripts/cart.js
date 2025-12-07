@@ -20,6 +20,17 @@ export function addToCart(productId, dropdownquantity) {
   console.log(cart);
 }
 
+export function removeFromCart(productId) {
+  const index = cart.findIndex((item) => item.productId === productId);
+  if (index === -1) {
+    console.warn(
+      `Attempted to remove product ${id} but it was not found in cart`
+    );
+    return;
+  }
+  cart.splice(index, 1);
+}
+
 export function getCartDetails() {
   return cart.map((cartItem) => {
     const product = products.find((p) => p.id === cartItem.productId);
