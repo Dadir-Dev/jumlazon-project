@@ -9,6 +9,11 @@ import {
 import { renderProducts } from "./products.js";
 import { renderCart } from "./cartUI.js";
 
+const cartItemsContainer = document.querySelector(
+  "[data-cart-items-container]"
+);
+const cartTotalElement = document.querySelector("[data-cart-total]");
+
 // ===== Initialization & Add to Cart (event delegation) =====
 function init() {
   const productsContainer = document.querySelector("[data-products-container]");
@@ -105,11 +110,6 @@ function renderCartQuantity() {
 // Update your updateCart function
 function updateCart() {
   renderCartQuantity();
-
-  const cartItemsContainer = document.querySelector(
-    "[data-cart-items-container]"
-  );
-  const cartTotalElement = document.querySelector("[data-cart-total]");
 
   if (!cartItemsContainer || !cartTotalElement) {
     console.warn("Cart container elements not found for renderCart");
