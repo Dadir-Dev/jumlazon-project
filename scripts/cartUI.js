@@ -59,6 +59,12 @@ export function renderCart(cartItemsContainer, cartTotalElement, cartDetails) {
 
   // Update total price
   cartTotalElement.textContent = `$${totalPrice.toFixed(2)}`;
+
+  // Show checkout button if cart is not empty
+  const checkoutButton = document.querySelector("[data-checkout-button]");
+  if (checkoutButton) {
+    checkoutButton.classList.remove("hidden");
+  }
 }
 
 // Cart quantity display
