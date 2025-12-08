@@ -72,7 +72,7 @@ function init() {
     return;
   }
 
-  cartItemsContainer.addEventListener("click", (e) => {
+  document.body.addEventListener("click", (e) => {
     const increaseBtn = e.target.closest("[data-increase-quantity]");
     const decreaseBtn = e.target.closest("[data-decrease-quantity]");
     if (!increaseBtn && !decreaseBtn) return;
