@@ -1,5 +1,4 @@
 import { products } from "../data/products.js";
-import { cart } from "../data/cartData.js";
 import {
   addToCart,
   getCartDetails,
@@ -9,6 +8,8 @@ import {
 import { renderProducts } from "./products.js";
 import { renderCart, renderCartQuantity } from "./cartUI.js";
 
+// ===== DOM Elements =====
+const productsContainer = document.querySelector("[data-products-container]");
 const cartItemsContainer = document.querySelector(
   "[data-cart-items-container]"
 );
@@ -17,7 +18,6 @@ const cartCountElement = document.querySelector("[data-cart-quantity]");
 
 // ===== Initialization & Add to Cart (event delegation) =====
 function init() {
-  const productsContainer = document.querySelector("[data-products-container]");
   if (!productsContainer) {
     console.error("[data-products-container] not found");
     return;
@@ -38,9 +38,16 @@ function init() {
     const id = Number(btn.dataset.productId);
     const product = products.find((p) => p.id === id);
     if (!product) return;
-    const dropdownQuantity = document.querySelector(
+
+    const quantityEl = document.querySelector(
       `[data-dropwdown-quantity-${id}]`
-    ).value;
+    );
+    // Ensure quantity element exists(guard clause)
+    if (!quantityEl) {
+      console.warn(`dropdown quantity element for product ${id} not found`);
+      return;
+    }
+    const dropdownQuantity = quantityEl.value;
     addToCart(id, dropdownQuantity);
     updateCart();
     // show added to cart message
@@ -73,7 +80,7 @@ function init() {
     return;
   }
 
-  document.body.addEventListener("click", (e) => {
+  cartItemsContainer.addEventListener("click", (e) => {
     const increaseBtn = e.target.closest("[data-increase-quantity]");
     const decreaseBtn = e.target.closest("[data-decrease-quantity]");
     if (!increaseBtn && !decreaseBtn) return;
@@ -112,7 +119,6 @@ function updateCart() {
 }
 
 // // ===== Initialization =====
-// updateCartCount();
 
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", init);
