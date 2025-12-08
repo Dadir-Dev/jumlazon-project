@@ -57,3 +57,10 @@ export function updateQuantity(productId, change) {
     item.quantity--;
   }
 }
+
+export function getCartTotalPrice() {
+  return cart.reduce((total, item) => {
+    const product = products.find((p) => p.id === item.productId);
+    return total + (product ? product.price * item.quantity : 0);
+  }, 0);
+}
