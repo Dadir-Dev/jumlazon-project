@@ -1,3 +1,4 @@
+import { cart } from "../data/cartData.js";
 export function renderCart(cartItemsContainer, cartTotalElement, cartDetails) {
   // If cart is empty
   if (cartDetails.length === 0) {
@@ -58,4 +59,14 @@ export function renderCart(cartItemsContainer, cartTotalElement, cartDetails) {
 
   // Update total price
   cartTotalElement.textContent = `$${totalPrice.toFixed(2)}`;
+}
+
+// Cart quantity display
+export function renderCartQuantity(cartCountElement) {
+  if (!cartCountElement) {
+    console.error("[data-cart-quantity] not found");
+    return;
+  }
+  const TotalcartQuantity = cart.reduce((sum, item) => sum + item.quantity, 0);
+  cartCountElement.textContent = TotalcartQuantity;
 }
