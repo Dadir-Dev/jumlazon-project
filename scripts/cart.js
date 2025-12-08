@@ -1,12 +1,18 @@
 import { cart } from "../data/cartData.js";
 import { products } from "../data/products.js";
 
-export function addToCart(productId, dropdownquantity) {
+export function addToCart(productId, dropdownquantity = 1) {
+  // Ensure quantity is a valid number
+  const quantity = Number(dropdownquantity);
+  if (isNaN(quantity) || quantity <= 0) {
+    console.warn(`Invalid quantity: ${quantity}`);
+    return;
+  }
+
   // Check if product is already in cart
   const matchingItem = cart.find((item) => item.productId === productId);
+
   // If it is, increment quantity
-  const quantity = Number(dropdownquantity);
-  if (quantity <= 0) return;
   if (matchingItem) {
     matchingItem.quantity += quantity;
   }
