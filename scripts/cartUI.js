@@ -61,7 +61,7 @@ export function renderCart(cartItemsContainer, cartTotalElement, cartDetails) {
   cartTotalElement.textContent = `$${totalPrice.toFixed(2)}`;
 
   // Show checkout button if cart is not empty
-  const checkoutButton = document.querySelector("[data-checkout-button]");
+  const checkoutButton = document.querySelector("[data-checkout]");
   if (checkoutButton) {
     checkoutButton.classList.remove("hidden");
   }
