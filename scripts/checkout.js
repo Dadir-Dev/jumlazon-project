@@ -35,33 +35,85 @@ export function renderShippingStep() {
         <div class="grid grid-cols-2 gap-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
-            <input type="text" class="w-full border rounded-lg px-3 py-2" data-shipping-firstname>
+            <input 
+              type="text" 
+              class="w-full border rounded-lg px-3 py-2" 
+              data-shipping-firstname
+              placeholder="e.g. John"
+              required
+              minlength="2"
+              maxlength="40"
+              pattern="[A-Za-z\s'-]+"
+            >
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
-            <input type="text" class="w-full border rounded-lg px-3 py-2" data-shipping-lastname>
+            <input 
+              type="text" 
+              class="w-full border rounded-lg px-3 py-2" 
+              data-shipping-lastname
+              placeholder="e.g. Doe"
+              required
+              minlength="2"
+              maxlength="40"
+              pattern="[A-Za-z\s'-]+"
+            >
           </div>
         </div>
         
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">Address</label>
-          <input type="text" class="w-full border rounded-lg px-3 py-2" data-shipping-address>
+          <input 
+            type="text" 
+            class="w-full border rounded-lg px-3 py-2" 
+            data-shipping-address
+            placeholder="e.g. 123 Main St"
+            required
+            minlength="5"
+            maxlength="80"
+          >
         </div>
         
         <div class="grid grid-cols-2 gap-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">City</label>
-            <input type="text" class="w-full border rounded-lg px-3 py-2" data-shipping-city>
+            <input 
+              type="text" 
+              class="w-full border rounded-lg px-3 py-2" 
+              data-shipping-city
+              placeholder="e.g. New York"
+              required
+              minlength="2"
+              maxlength="50"
+              pattern="[A-Za-z\s'-]+"
+            >
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">ZIP Code</label>
-            <input type="text" class="w-full border rounded-lg px-3 py-2" data-shipping-zip>
+            <input 
+              type="text" 
+              class="w-full border rounded-lg px-3 py-2" 
+              data-shipping-zip
+              required
+              inputmode="numeric"
+              minlength="4"
+              maxlength="10"
+              pattern="\\d{4,10}"
+              placeholder="e.g. 10001"
+            >
           </div>
         </div>
         
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-          <input type="email" class="w-full border rounded-lg px-3 py-2" data-shipping-email>
+          <input 
+            type="email" 
+            class="w-full border rounded-lg px-3 py-2" 
+            data-shipping-email
+            placeholder="e.g. johndoe@gmail.com"
+            required
+            maxlength="60"
+          >
         </div>
       </div>
       
@@ -69,7 +121,8 @@ export function renderShippingStep() {
       <div class="flex justify-end pt-6">
         <button 
           class="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition duration-300"
-          data-next-step="payment"
+          data-next-step="payment" 
+          type="submit"
         >
           Continue to Payment
         </button>
