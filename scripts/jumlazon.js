@@ -224,6 +224,18 @@ function updateStepIndicator(activeStep) {
         "w-8 h-8 rounded-full bg-gray-200 text-gray-600 flex items-center justify-center";
     }
   });
+
+  // Update labels
+  document.querySelectorAll("[data-step-label]").forEach((el) => {
+    const stepName = el.dataset.stepLabel;
+    if (stepName === activeStep) {
+      el.className = "ml-2 font-medium text-blue-600";
+    } else if (steps[stepName] < steps[activeStep]) {
+      el.className = "ml-2 font-medium text-green-600";
+    } else {
+      el.className = "ml-2 text-gray-500";
+    }
+  });
 }
 
 // // ===== Initialization =====
