@@ -6,6 +6,7 @@ module.exports = {
     "./scripts/*cartUI.js",
     "./scripts/*products.js",
     "./scripts/*cart.js",
+    "./scripts/*checkout.js",
   ],
   theme: {
     extend: {},
