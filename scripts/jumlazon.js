@@ -7,7 +7,12 @@ import {
 } from "./cart.js";
 import { renderProducts } from "./products.js";
 import { renderCart, renderCartQuantity } from "./cartUI.js";
-import { initCheckout } from "./checkout.js";
+import {
+  initCheckout,
+  renderShippingStep,
+  renderPaymentStep,
+  renderReviewStep,
+} from "./checkout.js";
 
 // ===== DOM Elements =====
 const productsContainer = document.querySelector("[data-products-container]");
@@ -105,7 +110,7 @@ function init() {
     updateCart();
   });
 
-  // Checkout button handler
+  // ===== Checkout Modal Handler =====
   document.body.addEventListener("click", (e) => {
     const checkoutBtn = e.target.closest("[data-checkout-button]");
     const modal = document.getElementById("checkoutModal");
@@ -118,6 +123,19 @@ function init() {
     if (closeCheckoutModalBtn) {
       // Close checkout
       modal.classList.add("hidden");
+    }
+
+    const nextStepBtn = e.target.closest("[data-next-step]");
+    const prevStepBtn = e.target.closest("[data-prev-step]");
+
+    if (nextStepBtn) {
+      const step = nextStepBtn.dataset.nextStep;
+      navigateCheckoutStep(step);
+    }
+
+    if (prevStepBtn) {
+      const step = prevStepBtn.dataset.prevStep;
+      navigateCheckoutStep(step);
     }
   });
 }
@@ -136,6 +154,23 @@ function openCheckoutModal() {
   // Show checkout
   modal.classList.remove("hidden");
   initCheckout();
+}
+
+function navigateCheckoutStep(step) {
+  const contentArea = document.querySelector("[data-checkout-content]");
+  if (!contentArea) return;
+
+  switch (step) {
+    case "shipping":
+      contentArea.innerHTML = renderShippingStep();
+      break;
+    case "payment":
+      contentArea.innerHTML = renderPaymentStep();
+      break;
+    case "review":
+      contentArea.innerHTML = renderReviewStep();
+      break;
+  }
 }
 
 // Update your updateCart function
