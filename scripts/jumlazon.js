@@ -113,16 +113,9 @@ function init() {
   // ===== Checkout Modal Handler =====
   document.body.addEventListener("click", (e) => {
     const checkoutBtn = e.target.closest("[data-checkout-button]");
-    const modal = document.getElementById("checkoutModal");
-    const closeCheckoutModalBtn = e.target.closest("[date-close-checkout]");
 
     if (checkoutBtn) {
       openCheckoutModal();
-    }
-
-    if (closeCheckoutModalBtn) {
-      // Close checkout
-      modal.classList.add("hidden");
     }
 
     const nextStepBtn = e.target.closest("[data-next-step]");
@@ -138,6 +131,34 @@ function init() {
       navigateCheckoutStep(step);
     }
   });
+
+  // Close checkout modal
+  const closeCheckoutBtn = document.getElementById("closeCheckout");
+  if (closeCheckoutBtn) {
+    closeCheckoutBtn.addEventListener("click", () => {
+      document.getElementById("checkoutModal").classList.add("hidden");
+    });
+  }
+
+  // Close on ESC key
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      document.getElementById("checkoutModal").classList.add("hidden");
+    }
+  });
+}
+
+// Update your updateCart function
+function updateCart() {
+  renderCartQuantity(cartCountElement);
+
+  if (!cartItemsContainer || !cartTotalElement) {
+    console.warn("Cart container elements not found for renderCart");
+    return;
+  }
+
+  const cartDetails = getCartDetails();
+  renderCart(cartItemsContainer, cartTotalElement, cartDetails);
 }
 
 function openCheckoutModal() {
@@ -171,19 +192,38 @@ function navigateCheckoutStep(step) {
       contentArea.innerHTML = renderReviewStep();
       break;
   }
+
+  // update step indicator
+  updateStepIndicator(step);
 }
 
-// Update your updateCart function
-function updateCart() {
-  renderCartQuantity(cartCountElement);
+function updateStepIndicator(activeStep) {
+  const steps = {
+    shipping: 1,
+    payment: 2,
+    review: 3,
+  };
 
-  if (!cartItemsContainer || !cartTotalElement) {
-    console.warn("Cart container elements not found for renderCart");
-    return;
-  }
+  // get all step numbers
+  const stepNumbersEl = document.querySelectorAll("[data-step-number]");
 
-  const cartDetails = getCartDetails();
-  renderCart(cartItemsContainer, cartTotalElement, cartDetails);
+  stepNumbersEl.forEach((el) => {
+    const stepNum = parseInt(el.dataset.stepNumber);
+
+    if (stepNum < steps[activeStep]) {
+      // Previous step - completed
+      el.className =
+        "w-8 h-8 rounded-full bg-green-600 text-white flex items-center justify-center";
+    } else if (stepNum === steps[activeStep]) {
+      // Current step - active
+      el.className =
+        "w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center";
+    } else {
+      // Future step - inactive
+      el.className =
+        "w-8 h-8 rounded-full bg-gray-200 text-gray-600 flex items-center justify-center";
+    }
+  });
 }
 
 // // ===== Initialization =====
