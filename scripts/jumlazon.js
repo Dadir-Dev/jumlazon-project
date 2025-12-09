@@ -7,6 +7,7 @@ import {
 } from "./cart.js";
 import { renderProducts } from "./products.js";
 import { renderCart, renderCartQuantity } from "./cartUI.js";
+import { initCheckout } from "./checkout.js";
 
 // ===== DOM Elements =====
 const productsContainer = document.querySelector("[data-products-container]");
@@ -103,6 +104,38 @@ function init() {
     removeFromCart(id);
     updateCart();
   });
+
+  // Checkout button handler
+  document.body.addEventListener("click", (e) => {
+    const checkoutBtn = e.target.closest("[data-checkout-button]");
+    const modal = document.getElementById("checkoutModal");
+    const closeCheckoutModalBtn = e.target.closest("[date-close-checkout]");
+
+    if (checkoutBtn) {
+      openCheckoutModal();
+    }
+
+    if (closeCheckoutModalBtn) {
+      // Close checkout
+      modal.classList.add("hidden");
+    }
+  });
+}
+
+function openCheckoutModal() {
+  const modal = document.getElementById("checkoutModal");
+  const cartContainer = document.getElementById("cartContainer");
+
+  if (!modal) return;
+
+  // Close cart if open
+  if (cartContainer) {
+    cartContainer.classList.add("hidden");
+  }
+
+  // Show checkout
+  modal.classList.remove("hidden");
+  initCheckout();
 }
 
 // Update your updateCart function
