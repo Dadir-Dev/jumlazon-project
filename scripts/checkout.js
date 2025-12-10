@@ -1,9 +1,18 @@
 import { getCartDetails, getCartTotalPrice } from "./cart.js";
 
+// State object to hold form data
+let checkoutData = {
+  shipping: {},
+  payment: { method: "card" },
+};
+
 // Step 1: Shipping Form
 export function renderShippingStep() {
   const cartDetails = getCartDetails();
   const totalPrice = getCartTotalPrice();
+  const shippingData = checkoutData.shipping;
+
+  // We use values from checkoutData to pre-fill the inputs if they exist
 
   return `
     <div class="space-y-6">
@@ -29,7 +38,7 @@ export function renderShippingStep() {
       </div>
       
       <!-- Shipping Form -->
-      <div class="space-y-4">
+      <form class="space-y-4" data-checkout-form="shipping">
         <h3 class="font-bold">Shipping Information</h3>
         
         <div class="grid grid-cols-2 gap-4">
@@ -44,6 +53,7 @@ export function renderShippingStep() {
               minlength="2"
               maxlength="40"
               pattern="[A-Za-z\s'-]+"
+              value="${shippingData.firstName || ""}"
             >
           </div>
           <div>
@@ -57,6 +67,7 @@ export function renderShippingStep() {
               minlength="2"
               maxlength="40"
               pattern="[A-Za-z\s'-]+"
+              value="${shippingData.lastName || ""}"
             >
           </div>
         </div>
@@ -71,6 +82,7 @@ export function renderShippingStep() {
             required
             minlength="5"
             maxlength="80"
+            value="${shippingData.address || ""}"
           >
         </div>
         
@@ -86,6 +98,7 @@ export function renderShippingStep() {
               minlength="2"
               maxlength="50"
               pattern="[A-Za-z\s'-]+"
+              value="${shippingData.city || ""}"
             >
           </div>
           <div>
@@ -100,6 +113,7 @@ export function renderShippingStep() {
               maxlength="10"
               pattern="\\d{4,10}"
               placeholder="e.g. 10001"
+              value="${shippingData.zip || ""}"
             >
           </div>
         </div>
@@ -113,9 +127,10 @@ export function renderShippingStep() {
             placeholder="e.g. johndoe@gmail.com"
             required
             maxlength="60"
+            value="${shippingData.email || ""}"
           >
         </div>
-      </div>
+      </form>
       
       <!-- Navigation -->
       <div class="flex justify-end pt-6">
@@ -159,17 +174,17 @@ export function renderPaymentStep() {
       <div id="cardDetails" class="space-y-4">
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">Card Number</label>
-          <input type="text" class="w-full border rounded-lg px-3 py-2" placeholder="1234 5678 9012 3456">
+          <input type="text" class="w-full border rounded-lg px-3 py-2" placeholder="1234 5678 9012 3456" pattern="\\d{16}" inputmode="numeric">
         </div>
         
         <div class="grid grid-cols-2 gap-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Expiry Date</label>
-            <input type="text" class="w-full border rounded-lg px-3 py-2" placeholder="MM/YY">
+            <input type="text" class="w-full border rounded-lg px-3 py-2" placeholder="MM/YY" pattern="^(0[1-9]|1[0-2])\/\d{2}$" inputmode="numeric">
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">CVC</label>
-            <input type="text" class="w-full border rounded-lg px-3 py-2" placeholder="123">
+            <input type="text" class="w-full border rounded-lg px-3 py-2" placeholder="123" pattern="\\d{3}" inputmode="numeric">
           </div>
         </div>
       </div>
@@ -195,6 +210,19 @@ export function renderPaymentStep() {
 // Step 3: Review & Place Order
 export function renderReviewStep() {
   return `<div>Review step - coming soon</div>`;
+}
+
+// Helper to save data before moving forward
+export function saveAndProceed(event, step) {
+  event.preventDefault();
+  // Gather form data
+  const formData = new FormData(event.target);
+  const data = {};
+  formData.forEach((value, key) => {
+    data[key] = value;
+  });
+  checkoutData[step] = data;
+  navigateCheckoutStep(step);
 }
 
 // Initialize checkout
