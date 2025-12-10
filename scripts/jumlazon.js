@@ -124,13 +124,14 @@ function init() {
     const prevStepBtn = e.target.closest("[data-prev-step]");
 
     if (nextStepBtn) {
-      const step = nextStepBtn.dataset.nextStep;
+      const nextStep = nextStepBtn.dataset.nextStep;
       // Find the current form
       const form = document.querySelector("[data-checkout-form]");
       if (form) {
-        saveAndProceed(e, step, form);
+        const currentStep = form.dataset.checkoutForm; // shipping or payment
+        saveAndProceed(e, currentStep, nextStep, form);
       } else {
-        navigateCheckoutStep(step);
+        navigateCheckoutStep(nextStep);
       }
     }
 
