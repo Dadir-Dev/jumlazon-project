@@ -46,13 +46,14 @@ export function renderShippingStep() {
             <label class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
             <input 
               type="text" 
+              name="firstName"
               class="w-full border rounded-lg px-3 py-2" 
               data-shipping-firstname
               placeholder="e.g. John"
               required
               minlength="2"
               maxlength="40"
-              pattern="[A-Za-z\s'-]+"
+              pattern="^[a-zA-Z ]+$"
               value="${shippingData.firstName || ""}"
             >
           </div>
@@ -60,13 +61,14 @@ export function renderShippingStep() {
             <label class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
             <input 
               type="text" 
+              name="lastName"
               class="w-full border rounded-lg px-3 py-2" 
               data-shipping-lastname
               placeholder="e.g. Doe"
               required
               minlength="2"
-              maxlength="40"
-              pattern="[A-Za-z\s'-]+"
+              maxlength="40" 
+              pattern="^[a-zA-Z ]+$"
               value="${shippingData.lastName || ""}"
             >
           </div>
@@ -76,12 +78,14 @@ export function renderShippingStep() {
           <label class="block text-sm font-medium text-gray-700 mb-1">Address</label>
           <input 
             type="text" 
+            name="address"
             class="w-full border rounded-lg px-3 py-2" 
             data-shipping-address
             placeholder="e.g. 123 Main St"
             required
             minlength="5"
             maxlength="80"
+            pattern="^[a-zA-Z0-9\s,.'-]*$"
             value="${shippingData.address || ""}"
           >
         </div>
@@ -91,13 +95,14 @@ export function renderShippingStep() {
             <label class="block text-sm font-medium text-gray-700 mb-1">City</label>
             <input 
               type="text" 
+              name="city"
               class="w-full border rounded-lg px-3 py-2" 
               data-shipping-city
               placeholder="e.g. New York"
               required
               minlength="2"
               maxlength="50"
-              pattern="[A-Za-z\s'-]+"
+              pattern="^[a-zA-Z ]+$"
               value="${shippingData.city || ""}"
             >
           </div>
@@ -105,6 +110,7 @@ export function renderShippingStep() {
             <label class="block text-sm font-medium text-gray-700 mb-1">ZIP Code</label>
             <input 
               type="text" 
+              name="zip"
               class="w-full border rounded-lg px-3 py-2" 
               data-shipping-zip
               required
@@ -122,11 +128,13 @@ export function renderShippingStep() {
           <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
           <input 
             type="email" 
+            name="email"
             class="w-full border rounded-lg px-3 py-2" 
             data-shipping-email
             placeholder="e.g. johndoe@gmail.com"
             required
             maxlength="60"
+            pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
             value="${shippingData.email || ""}"
           >
         </div>
@@ -149,7 +157,7 @@ export function renderShippingStep() {
 // Step 2: Payment Form (simplified)
 export function renderPaymentStep() {
   return `
-    <div class="space-y-6">
+    <form data-checkout-form="payment" class="space-y-6">
       <h3 class="font-bold">Payment Method</h3>
       
       <div class="space-y-4">
@@ -174,17 +182,23 @@ export function renderPaymentStep() {
       <div id="cardDetails" class="space-y-4">
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">Card Number</label>
-          <input type="text" class="w-full border rounded-lg px-3 py-2" placeholder="1234 5678 9012 3456" pattern="\\d{16}" inputmode="numeric">
+          <input type="text" name="cardNumber" class="w-full border rounded-lg px-3 py-2" placeholder="1234 5678 9012 3456" pattern="\\d{16}" inputmode="numeric" value="${
+            checkoutData.payment.cardNumber || ""
+          }">
         </div>
         
         <div class="grid grid-cols-2 gap-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Expiry Date</label>
-            <input type="text" class="w-full border rounded-lg px-3 py-2" placeholder="MM/YY" pattern="^(0[1-9]|1[0-2])\/\d{2}$" inputmode="numeric">
+            <input type="text" name="expiryDate" class="w-full border rounded-lg px-3 py-2" placeholder="MM/YY" pattern="^(0[1-9]|1[0-2])\/\d{2}$" inputmode="numeric" value="${
+              checkoutData.payment.expiryDate || ""
+            }">
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">CVC</label>
-            <input type="text" class="w-full border rounded-lg px-3 py-2" placeholder="123" pattern="\\d{3}" inputmode="numeric">
+            <input type="text" name="cvc" class="w-full border rounded-lg px-3 py-2" placeholder="123" pattern="\\d{3}" inputmode="numeric" value="${
+              checkoutData.payment.cvc || ""
+            }">
           </div>
         </div>
       </div>
@@ -203,7 +217,7 @@ export function renderPaymentStep() {
           Review Order
         </button>
       </div>
-    </div>
+    </form>
   `;
 }
 
@@ -213,15 +227,12 @@ export function renderReviewStep() {
 }
 
 // Helper to save data before moving forward
-export function saveAndProceed(event, step, formElement) {
+export function saveAndProceed(event, currentStep, nextStep, formElement) {
   // Prevent default only if this is a submit/click originating from a form control
   if (event && typeof event.preventDefault === "function")
     event.preventDefault();
   // Determine the form element to gather data from. Prefer explicit param.
-  const form =
-    formElement ||
-    event.target.closest("form") ||
-    document.querySelector("[data-checkout-form]");
+  const form = formElement || document.querySelector("[data-checkout-form]");
 
   if (!form || !(form instanceof HTMLFormElement)) {
     console.warn(
@@ -234,12 +245,19 @@ export function saveAndProceed(event, step, formElement) {
 
   // Gather form data
   const formData = new FormData(form);
+  console.log(formData);
   const data = {};
   formData.forEach((value, key) => {
     data[key] = value;
   });
-  checkoutData[step] = data;
-  navigateCheckoutStep(step);
+
+  // console.log(data);
+  // Save data to state
+  checkoutData[currentStep] = data;
+
+  // Navigate to next step
+  navigateCheckoutStep(nextStep);
+  console.log("Saved data: ", checkoutData);
 }
 
 // Initialize checkout
