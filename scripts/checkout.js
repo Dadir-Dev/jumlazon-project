@@ -213,10 +213,27 @@ export function renderReviewStep() {
 }
 
 // Helper to save data before moving forward
-export function saveAndProceed(event, step) {
-  event.preventDefault();
+export function saveAndProceed(event, step, formElement) {
+  // Prevent default only if this is a submit/click originating from a form control
+  if (event && typeof event.preventDefault === "function")
+    event.preventDefault();
+  // Determine the form element to gather data from. Prefer explicit param.
+  const form =
+    formElement ||
+    event.target.closest("form") ||
+    document.querySelector("[data-checkout-form]");
+
+  if (!form || !(form instanceof HTMLFormElement)) {
+    console.warn(
+      "saveAndProceed: no HTMLFormElement found to collect data from"
+    );
+    // still navigate to the next step so UX isn't blocked
+    navigateCheckoutStep(step);
+    return;
+  }
+
   // Gather form data
-  const formData = new FormData(event.target);
+  const formData = new FormData(form);
   const data = {};
   formData.forEach((value, key) => {
     data[key] = value;
@@ -232,4 +249,67 @@ export function initCheckout() {
 
   // Start with shipping step
   contentArea.innerHTML = renderShippingStep();
+}
+
+// Navigate between checkout steps and update the step indicator
+export function navigateCheckoutStep(step) {
+  const contentArea = document.querySelector("[data-checkout-content]");
+  if (!contentArea) return;
+
+  switch (step) {
+    case "shipping":
+      contentArea.innerHTML = renderShippingStep();
+      break;
+    case "payment":
+      contentArea.innerHTML = renderPaymentStep();
+      break;
+    case "review":
+      contentArea.innerHTML = renderReviewStep();
+      break;
+  }
+
+  // update step indicator
+  updateStepIndicator(step);
+}
+
+// Update visual step indicator in checkout modal
+export function updateStepIndicator(activeStep) {
+  const steps = {
+    shipping: 1,
+    payment: 2,
+    review: 3,
+  };
+
+  // get all step numbers
+  const stepNumbersEl = document.querySelectorAll("[data-step-number]");
+
+  stepNumbersEl.forEach((el) => {
+    const stepNum = parseInt(el.dataset.stepNumber);
+
+    if (stepNum < steps[activeStep]) {
+      // Previous step - completed
+      el.className =
+        "w-8 h-8 rounded-full bg-green-600 text-white flex items-center justify-center";
+    } else if (stepNum === steps[activeStep]) {
+      // Current step - active
+      el.className =
+        "w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center";
+    } else {
+      // Future step - inactive
+      el.className =
+        "w-8 h-8 rounded-full bg-gray-200 text-gray-600 flex items-center justify-center";
+    }
+  });
+
+  // Update labels
+  document.querySelectorAll("[data-step-label]").forEach((el) => {
+    const stepName = el.dataset.stepLabel;
+    if (stepName === activeStep) {
+      el.className = "ml-2 font-medium text-blue-600";
+    } else if (steps[stepName] < steps[activeStep]) {
+      el.className = "ml-2 font-medium text-green-600";
+    } else {
+      el.className = "ml-2 text-gray-500";
+    }
+  });
 }
