@@ -12,6 +12,8 @@ import {
   renderShippingStep,
   renderPaymentStep,
   renderReviewStep,
+  saveAndProceed,
+  navigateCheckoutStep,
 } from "./checkout.js";
 
 // ===== DOM Elements =====
@@ -123,7 +125,13 @@ function init() {
 
     if (nextStepBtn) {
       const step = nextStepBtn.dataset.nextStep;
-      navigateCheckoutStep(step);
+      // Find the current form
+      const form = document.querySelector("[data-checkout-form]");
+      if (form) {
+        saveAndProceed(e, step, form);
+      } else {
+        navigateCheckoutStep(step);
+      }
     }
 
     if (prevStepBtn) {
@@ -177,66 +185,7 @@ function openCheckoutModal() {
   initCheckout();
 }
 
-function navigateCheckoutStep(step) {
-  const contentArea = document.querySelector("[data-checkout-content]");
-  if (!contentArea) return;
-
-  switch (step) {
-    case "shipping":
-      contentArea.innerHTML = renderShippingStep();
-      break;
-    case "payment":
-      contentArea.innerHTML = renderPaymentStep();
-      break;
-    case "review":
-      contentArea.innerHTML = renderReviewStep();
-      break;
-  }
-
-  // update step indicator
-  updateStepIndicator(step);
-}
-
-function updateStepIndicator(activeStep) {
-  const steps = {
-    shipping: 1,
-    payment: 2,
-    review: 3,
-  };
-
-  // get all step numbers
-  const stepNumbersEl = document.querySelectorAll("[data-step-number]");
-
-  stepNumbersEl.forEach((el) => {
-    const stepNum = parseInt(el.dataset.stepNumber);
-
-    if (stepNum < steps[activeStep]) {
-      // Previous step - completed
-      el.className =
-        "w-8 h-8 rounded-full bg-green-600 text-white flex items-center justify-center";
-    } else if (stepNum === steps[activeStep]) {
-      // Current step - active
-      el.className =
-        "w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center";
-    } else {
-      // Future step - inactive
-      el.className =
-        "w-8 h-8 rounded-full bg-gray-200 text-gray-600 flex items-center justify-center";
-    }
-  });
-
-  // Update labels
-  document.querySelectorAll("[data-step-label]").forEach((el) => {
-    const stepName = el.dataset.stepLabel;
-    if (stepName === activeStep) {
-      el.className = "ml-2 font-medium text-blue-600";
-    } else if (steps[stepName] < steps[activeStep]) {
-      el.className = "ml-2 font-medium text-green-600";
-    } else {
-      el.className = "ml-2 text-gray-500";
-    }
-  });
-}
+// Note: checkout navigation and step indicator live in `checkout.js`.
 
 // // ===== Initialization =====
 
