@@ -1,4 +1,3 @@
-import { products } from "../data/products.js";
 import {
   addToCart,
   getCartDetails,
