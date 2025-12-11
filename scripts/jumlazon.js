@@ -31,36 +31,8 @@ function init() {
   renderProducts(productsContainer);
   updateCart();
   initCartListeners();
+  initCheckoutEventListeners();
   initCartToggle();
-
-  // ===== Checkout Modal Handler =====
-  document.body.addEventListener("click", (e) => {
-    const checkoutBtn = e.target.closest("[data-checkout-button]");
-
-    if (checkoutBtn) {
-      openCheckoutModal();
-    }
-
-    const nextStepBtn = e.target.closest("[data-next-step]");
-    const prevStepBtn = e.target.closest("[data-prev-step]");
-
-    if (nextStepBtn) {
-      const nextStep = nextStepBtn.dataset.nextStep;
-      // Find the current form
-      const form = document.querySelector("[data-checkout-form]");
-      if (form) {
-        const currentStep = form.dataset.checkoutForm;
-        saveAndProceed(e, currentStep, nextStep, form);
-      } else {
-        navigateCheckoutStep(nextStep);
-      }
-    }
-
-    if (prevStepBtn) {
-      const step = prevStepBtn.dataset.prevStep;
-      navigateCheckoutStep(step);
-    }
-  });
 
   // Close checkout modal
   const closeCheckoutBtn = document.getElementById("closeCheckout");
@@ -153,6 +125,37 @@ function initCartListeners() {
   }
 }
 
+// ===== CHECKOUT UI LISTENERS =====
+function initCheckoutEventListeners() {
+  document.body.addEventListener("click", (e) => {
+    const checkoutBtn = e.target.closest("[data-checkout-button]");
+    if (checkoutBtn) {
+      openCheckoutModal();
+    }
+
+    const nextStepBtn = e.target.closest("[data-next-step]");
+    const prevStepBtn = e.target.closest("[data-prev-step]");
+
+    if (nextStepBtn) {
+      const nextStep = nextStepBtn.dataset.nextStep;
+      // Find the current form
+      const form = document.querySelector("[data-checkout-form]");
+      const currentStep = form?.dataset.checkoutForm;
+      if (currentStep) {
+        saveAndProceed(e, currentStep, nextStep, form);
+      } else {
+        navigateCheckoutStep(nextStep);
+      }
+    }
+
+    if (prevStepBtn) {
+      const step = prevStepBtn.dataset.prevStep;
+      navigateCheckoutStep(step);
+    }
+  });
+}
+
+// ===== OPEN CHECKOUT MODAL =====
 function openCheckoutModal() {
   const modal = document.getElementById("checkoutModal");
   const cartContainer = document.getElementById("cartContainer");
