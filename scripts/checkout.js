@@ -1,13 +1,13 @@
 import { getCartDetails, getCartTotalPrice } from "./cart.js";
 
-// State object to hold form data
+// ===== STATE — all checkout data is stored here ====
 let checkoutData = {
   shipping: {},
   payment: { method: "card" },
 };
 
-// Step 1: Shipping Form
-export function renderShippingStep() {
+// ===== Step 1: Shipping Form =====
+function renderShippingStep() {
   const cartDetails = getCartDetails();
   const totalPrice = getCartTotalPrice();
   const shippingData = checkoutData.shipping;
@@ -154,8 +154,9 @@ export function renderShippingStep() {
   `;
 }
 
-// Step 2: Payment Form (simplified)
-export function renderPaymentStep() {
+// ===== Step 2: Payment Form (simplified) =====
+function renderPaymentStep() {
+  const paymentData = checkoutData.payment;
   return `
     <form data-checkout-form="payment" class="space-y-6">
       <h3 class="font-bold">Payment Method</h3>
@@ -183,7 +184,7 @@ export function renderPaymentStep() {
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">Card Number</label>
           <input type="text" name="cardNumber" class="w-full border rounded-lg px-3 py-2" placeholder="1234 5678 9012 3456" pattern="\\d{16}" inputmode="numeric" value="${
-            checkoutData.payment.cardNumber || ""
+            paymentData.cardNumber || ""
           }">
         </div>
         
@@ -191,13 +192,13 @@ export function renderPaymentStep() {
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Expiry Date</label>
             <input type="text" name="expiryDate" class="w-full border rounded-lg px-3 py-2" placeholder="MM/YY" pattern="^(0[1-9]|1[0-2])\/\d{2}$" inputmode="numeric" value="${
-              checkoutData.payment.expiryDate || ""
+              paymentData.expiryDate || ""
             }">
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">CVC</label>
             <input type="text" name="cvc" class="w-full border rounded-lg px-3 py-2" placeholder="123" pattern="\\d{3}" inputmode="numeric" value="${
-              checkoutData.payment.cvc || ""
+              paymentData.cvc || ""
             }">
           </div>
         </div>
@@ -221,55 +222,52 @@ export function renderPaymentStep() {
   `;
 }
 
-// Step 3: Review & Place Order
-export function renderReviewStep() {
+// ===== Step 3: Review & Place Order =====
+function renderReviewStep() {
   return `<div>Review step - coming soon</div>`;
 }
 
-// Helper to save data before moving forward
+// ===== Save Data before moving forward =====
 export function saveAndProceed(event, currentStep, nextStep, formElement) {
-  // Prevent default only if this is a submit/click originating from a form control
-  if (event && typeof event.preventDefault === "function")
-    event.preventDefault();
-  // Determine the form element to gather data from. Prefer explicit param.
-  const form = formElement || document.querySelector("[data-checkout-form]");
+  // Prevent default
+  event.preventDefault();
 
-  if (!form || !(form instanceof HTMLFormElement)) {
+  // Determine the form element to gather data from.
+  const form = formElement;
+
+  if (!form) {
     console.warn(
       "saveAndProceed: no HTMLFormElement found to collect data from"
     );
     // still navigate to the next step so UX isn't blocked
-    navigateCheckoutStep(step);
+    navigateCheckoutStep(nextStep);
     return;
   }
 
   // Gather form data
   const formData = new FormData(form);
-  console.log(formData);
   const data = {};
   formData.forEach((value, key) => {
     data[key] = value;
   });
 
-  // console.log(data);
   // Save data to state
   checkoutData[currentStep] = data;
 
   // Navigate to next step
   navigateCheckoutStep(nextStep);
-  console.log("Saved data: ", checkoutData);
 }
 
-// Initialize checkout
+// ===== INITIALIZATION + NAVIGATION =====
 export function initCheckout() {
   const contentArea = document.querySelector("[data-checkout-content]");
   if (!contentArea) return;
 
   // Start with shipping step
   contentArea.innerHTML = renderShippingStep();
+  updateStepIndicator("shipping");
 }
 
-// Navigate between checkout steps and update the step indicator
 export function navigateCheckoutStep(step) {
   const contentArea = document.querySelector("[data-checkout-content]");
   if (!contentArea) return;
@@ -290,7 +288,7 @@ export function navigateCheckoutStep(step) {
   updateStepIndicator(step);
 }
 
-// Update visual step indicator in checkout modal
+// ===== STEP INDICATOR UI UPDATE =====
 export function updateStepIndicator(activeStep) {
   const steps = {
     shipping: 1,
