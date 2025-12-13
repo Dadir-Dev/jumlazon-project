@@ -76,7 +76,10 @@ export function renderProducts(container) {
 
 export function initProducts(productsContainer, onAddToCart) {
   if (!productsContainer) return;
+  // Store all timeouts here (outside the event listener)
+  const addedMessageTimeouts = {};
 
+  // SINGLE event listener for ALL add-to-cart buttons (current and future)
   productsContainer.addEventListener("click", (e) => {
     const btn = e.target.closest("[data-add-to-cart]");
     if (!btn) return;
@@ -90,8 +93,29 @@ export function initProducts(productsContainer, onAddToCart) {
       console.warn(`dropdown quantity element for product ${id} not found`);
       return;
     }
-    const quantity = Number(quantityEl.value);
+    const qty = quantityEl.value;
 
-    onAddToCart(id, quantity);
+    // 🔑 notify app
+    onAddToCart(id, qty);
+
+    // Show "Added" message
+    const card = btn.closest(".p-4") || btn.parentElement;
+    const addedMsg = card && card.querySelector(`[data-added-message-${id}]`);
+    if (addedMsg) {
+      // // If timeout exists, clear it first
+      if (addedMessageTimeouts[id]) {
+        clearTimeout(addedMessageTimeouts[id]);
+        addedMessageTimeouts[id] = null;
+      }
+      // show the message
+      addedMsg.classList.remove("opacity-0");
+
+      // Set a new timeout to hide the message after 1 second
+      addedMessageTimeouts[id] = setTimeout(() => {
+        addedMsg.classList.add("opacity-0");
+      }, 1000);
+    } else {
+      console.warn(`added message element for product ${id} not found`);
+    }
   });
 }
