@@ -73,3 +73,25 @@ export function renderProducts(container) {
     )
     .join("");
 }
+
+export function initProducts(productsContainer, onAddToCart) {
+  if (!productsContainer) return;
+
+  productsContainer.addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-add-to-cart]");
+    if (!btn) return;
+
+    const id = Number(btn.dataset.productId);
+    const quantityEl = document.querySelector(
+      `[data-dropwdown-quantity-${id}]`
+    );
+    // Ensure quantity element exists(guard clause)
+    if (!quantityEl) {
+      console.warn(`dropdown quantity element for product ${id} not found`);
+      return;
+    }
+    const quantity = Number(quantityEl.value);
+
+    onAddToCart(id, quantity);
+  });
+}

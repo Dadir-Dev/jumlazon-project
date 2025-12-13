@@ -4,7 +4,7 @@ import {
   removeFromCart,
   updateQuantity,
 } from "./cart.js";
-import { renderProducts } from "./products.js";
+import { initProducts } from "./products.js";
 import { renderCart, renderCartQuantity } from "./cartUI.js";
 import {
   initCheckout,
@@ -27,7 +27,10 @@ function init() {
     return;
   }
 
-  renderProducts(productsContainer);
+  initProducts(productsContainer, (productId, quantity) => {
+    addToCart(productId, quantity);
+    updateCart();
+  });
   updateCart();
   initCartListeners();
   initCheckoutEventListeners();
