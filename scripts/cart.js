@@ -64,3 +64,7 @@ export function getCartTotalPrice() {
     return total + (product ? product.price * item.quantity : 0);
   }, 0);
 }
+
+export function getCartQuantity() {
+  return cart.reduce((total, item) => total + item.quantity, 0);
+}

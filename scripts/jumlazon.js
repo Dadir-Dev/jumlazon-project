@@ -1,6 +1,7 @@
 import {
   addToCart,
   getCartDetails,
+  getCartQuantity,
   removeFromCart,
   updateQuantity,
 } from "./cart.js";
@@ -54,7 +55,7 @@ function init() {
 
 // ===== CART UPDATE =====
 function updateCart() {
-  renderCartQuantity(cartCountElement);
+  renderCartQuantity(cartCountElement, getCartQuantity());
 
   if (!cartItemsContainer || !cartTotalElement) {
     console.warn("Cart container elements not found for renderCart");
