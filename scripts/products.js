@@ -1,7 +1,7 @@
 import { products } from "../data/products.js";
 
 // ===== Render products =====
-export function renderProducts(container) {
+function renderProducts(container) {
   container.innerHTML = products
     .map(
       (product) => `
@@ -76,6 +76,9 @@ export function renderProducts(container) {
 
 export function initProducts(productsContainer, onAddToCart) {
   if (!productsContainer) return;
+
+  renderProducts(productsContainer);
+
   // Store all timeouts here (outside the event listener)
   const addedMessageTimeouts = {};
 

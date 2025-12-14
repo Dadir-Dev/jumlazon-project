@@ -4,7 +4,7 @@ import {
   removeFromCart,
   updateQuantity,
 } from "./cart.js";
-import { renderProducts, initProducts } from "./products.js";
+import { initProducts } from "./products.js";
 import { renderCart, renderCartQuantity } from "./cartUI.js";
 import {
   initCheckout,
@@ -26,9 +26,6 @@ function init() {
     console.error("[data-products-container] not found");
     return;
   }
-
-  // render product markup first so initProducts can attach delegated listeners
-  renderProducts(productsContainer);
 
   initProducts(productsContainer, (id, qty) => {
     addToCart(id, qty);
@@ -68,7 +65,7 @@ function updateCart() {
   renderCart(cartItemsContainer, cartTotalElement, cartDetails);
 }
 
-// ===== PRODUCT + CART LISTENERS =====
+// ===== CART LISTENERS =====
 function initCartListeners() {
   // Increase / Decrease / Remove
   if (cartItemsContainer) {
