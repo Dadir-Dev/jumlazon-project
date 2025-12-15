@@ -1,10 +1,27 @@
 import { getCartDetails, getCartTotalPrice } from "./cart.js";
 
 // ===== STATE — all checkout data is stored here ====
+const CHECKOUT_STORAGE_KEY = "jumlazon_checkout_v1";
 let checkoutData = {
   shipping: {},
   payment: { method: "card" },
 };
+
+function saveCheckoutToLocalStorage() {
+  localStorage.setItem(CHECKOUT_STORAGE_KEY, JSON.stringify(checkoutData));
+}
+
+function loadCheckoutFromLocalStorage() {
+  const stored = localStorage.getItem(CHECKOUT_STORAGE_KEY);
+  if (!stored) return;
+
+  try {
+    const parsedCheckout = JSON.parse(stored);
+    checkoutData = { ...checkoutData, ...parsedCheckout };
+  } catch (e) {
+    console.warn("Failed to load checkout data", e);
+  }
+}
 
 // ===== Step 1: Shipping Form =====
 function renderShippingStep() {
