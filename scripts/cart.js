@@ -1,6 +1,32 @@
 import { cart } from "../data/cartData.js";
 import { products } from "../data/products.js";
 
+// ===== Cart Management Functions =====
+const CART_STORAGE_KEY = "jumlazon_cart_v1";
+
+function saveCartToLocalStorage() {
+  localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
+}
+
+function loadCartFromLocalStorage() {
+  const cartData = localStorage.getItem(CART_STORAGE_KEY);
+  if (!cartData) return;
+  try {
+    const parsedCart = JSON.parse(cartData);
+    if (Array.isArray(parsedCart)) {
+      // Clear current cart and load from storage
+      cart.length = 0;
+      cart.push(...parsedCart);
+    }
+  } catch (e) {
+    console.error("Failed to parse cart data from localStorage", e);
+  }
+}
+
+export function initCart() {
+  loadCartFromLocalStorage();
+}
+
 export function addToCart(productId, dropdownquantity = 1) {
   // Ensure quantity is a valid number
   const quantity = Number(dropdownquantity);
@@ -23,6 +49,7 @@ export function addToCart(productId, dropdownquantity = 1) {
       quantity,
     });
   }
+  saveCartToLocalStorage();
   console.log(cart);
 }
 
@@ -37,6 +64,7 @@ export function removeFromCart(productId) {
   cart.splice(index, 1);
 }
 
+// Get cart details with product information
 export function getCartDetails() {
   return cart.map((cartItem) => {
     const product = products.find((p) => p.id === cartItem.productId);
@@ -47,6 +75,7 @@ export function getCartDetails() {
   });
 }
 
+// change = 1 or -1
 export function updateQuantity(productId, change) {
   const item = cart.find((item) => item.productId === productId);
   if (!item) return;
@@ -65,6 +94,7 @@ export function getCartTotalPrice() {
   }, 0);
 }
 
+// Get total quantity of items in cart
 export function getCartQuantity() {
   return cart.reduce((total, item) => total + item.quantity, 0);
 }

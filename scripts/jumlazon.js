@@ -4,6 +4,7 @@ import {
   getCartQuantity,
   removeFromCart,
   updateQuantity,
+  initCart,
 } from "./cart.js";
 import { initProducts } from "./products.js";
 import { renderCart, renderCartQuantity } from "./cartUI.js";
@@ -32,6 +33,7 @@ function init() {
     addToCart(id, qty);
     updateCart();
   });
+  initCart();
   updateCart();
   initCartListeners();
   initCheckoutEventListeners();
