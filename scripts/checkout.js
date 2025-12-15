@@ -249,6 +249,11 @@ export function saveAndProceed(event, currentStep, nextStep, formElement) {
   // Prevent default
   event.preventDefault();
 
+  if (!validateStep(currentStep, formElement)) {
+    alert("Please fill out all required fields");
+    return;
+  }
+
   // Determine the form element to gather data from.
   const form = formElement;
 
@@ -270,6 +275,7 @@ export function saveAndProceed(event, currentStep, nextStep, formElement) {
 
   // Save data to state
   checkoutData[currentStep] = data;
+  saveCheckoutToLocalStorage();
 
   // Navigate to next step
   navigateCheckoutStep(nextStep);
@@ -279,6 +285,8 @@ export function saveAndProceed(event, currentStep, nextStep, formElement) {
 export function initCheckout() {
   const contentArea = document.querySelector("[data-checkout-content]");
   if (!contentArea) return;
+
+  loadCheckoutFromLocalStorage();
 
   // Start with shipping step
   contentArea.innerHTML = renderShippingStep();
@@ -345,4 +353,34 @@ export function updateStepIndicator(activeStep) {
       el.className = "ml-2 text-gray-500";
     }
   });
+}
+
+// ===== VALIDATION =====
+function validateStep(step, form) {
+  if (!form) return false;
+
+  if (!form.checkValidity()) {
+    form.reportValidity();
+    return false;
+  }
+
+  if (step === "shipping") {
+    return (
+      form.querySelector("[name=firstName]")?.value &&
+      form.querySelector("[name=lastName]")?.value &&
+      form.querySelector("[name=address]")?.value &&
+      form.querySelector("[name=city]")?.value &&
+      form.querySelector("[name=zip]")?.value &&
+      form.querySelector("[name=email]")?.value
+    );
+  }
+  if (step === "payment") {
+    return (
+      form.querySelector("[name=cardNumber]")?.value &&
+      form.querySelector("[name=expiryDate]")?.value &&
+      form.querySelector("[name=cvc]")?.value
+    );
+  }
+
+  return true;
 }
