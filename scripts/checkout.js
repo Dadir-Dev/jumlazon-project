@@ -241,7 +241,69 @@ function renderPaymentStep() {
 
 // ===== Step 3: Review & Place Order =====
 function renderReviewStep() {
-  return `<div>Review step - coming soon</div>`;
+  // read data from checkoutData
+  const shippingData = checkoutData.shipping;
+  const paymentData = checkoutData.payment;
+  const cartDetails = getCartDetails();
+  const totalPrice = getCartTotalPrice();
+
+  return `
+    <div class="space-y-6">
+      <h3 class="font-bold">Review Your Order</h3>
+      
+      <!-- Order Summary -->
+      <div class="bg-gray-50 p-4 rounded-lg">
+        <h3 class="font-bold mb-3">Order Summary</h3>
+        ${cartDetails
+          .map(
+            (item) => `
+          <div class="flex justify-between text-sm mb-2">
+            <span>${item.product.name} × ${item.quantity}</span>
+            <span>$${(item.product.price * item.quantity).toFixed(2)}</span>
+          </div>
+        `
+          )
+          .join("")}
+        <div class="border-t pt-3 mt-3">
+          <div class="flex justify-between font-bold">
+            <span>Total</span>
+            <span>$${totalPrice.toFixed(2)}</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Shipping Information -->
+      <div class="bg-gray-50 p-4 rounded-lg">
+          <h3 class="font-bold mb-3">Shipping Information</h3>
+          <div class="text-sm">
+            <div>${shippingData.firstName} ${shippingData.lastName}</div>
+            <div>${shippingData.address}</div>
+            <div>${shippingData.city}, ${shippingData.zip}</div>
+            <div>${shippingData.email}</div>
+          </div>
+        </div>
+      
+      <!-- Payment Method -->
+      <div class="bg-gray-50 p-4 rounded-lg">
+          <h3 class="font-bold mb-3">Payment Method</h3>
+          <div class="text-sm">
+            <div>${
+              paymentData.method === "card" ? "Credit/Debit Card" : "PayPal"
+            }</div>
+          </div>
+        </div>
+      
+      <!-- Navigation -->
+      <div class="flex justify-end pt-6">
+        <button 
+          class="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition duration-300"
+          data-next-step="review"
+        >
+          Place Order
+        </button>
+      </div>
+    </div>
+  `;
 }
 
 // ===== Save Data before moving forward =====
@@ -277,8 +339,21 @@ export function saveAndProceed(event, currentStep, nextStep, formElement) {
   checkoutData[currentStep] = data;
   saveCheckoutToLocalStorage();
 
+  // Disable buttons to prevent multiple clicks
+  const buttons = form.querySelectorAll("button");
+  buttons.forEach((button) => {
+    button.disabled = true;
+  });
+
   // Navigate to next step
   navigateCheckoutStep(nextStep);
+
+  // Re-enable buttons after a short delay
+  setTimeout(() => {
+    buttons.forEach((button) => {
+      button.disabled = false;
+    });
+  }, 500);
 }
 
 // ===== INITIALIZATION + NAVIGATION =====
