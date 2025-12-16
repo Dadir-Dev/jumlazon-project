@@ -62,6 +62,7 @@ export function removeFromCart(productId) {
     return;
   }
   cart.splice(index, 1);
+  saveCartToLocalStorage();
 }
 
 // Get cart details with product information
@@ -85,6 +86,8 @@ export function updateQuantity(productId, change) {
   } else if (change === -1 && item.quantity > 1) {
     item.quantity--;
   }
+
+  saveCartToLocalStorage();
 }
 
 export function getCartTotalPrice() {
