@@ -311,7 +311,7 @@ export function saveAndProceed(event, currentStep, nextStep, formElement) {
   // Prevent default
   event.preventDefault();
 
-  if (!validateStep(currentStep, formElement)) {
+  if (!validateStep(formElement)) {
     alert("Please fill out all required fields");
     return;
   }
@@ -366,18 +366,29 @@ export function initCheckout() {
   // Start with shipping step
   contentArea.innerHTML = renderShippingStep();
   updateStepIndicator("shipping");
+  // Attach live validation for the initially rendered shipping form
+  attachLiveValidation(
+    contentArea.querySelector("[data-checkout-form='shipping']")
+  );
 }
 
 export function navigateCheckoutStep(step) {
   const contentArea = document.querySelector("[data-checkout-content]");
+
   if (!contentArea) return;
 
   switch (step) {
     case "shipping":
       contentArea.innerHTML = renderShippingStep();
+      attachLiveValidation(
+        contentArea.querySelector("[data-checkout-form='shipping']")
+      );
       break;
     case "payment":
       contentArea.innerHTML = renderPaymentStep();
+      attachLiveValidation(
+        contentArea.querySelector("[data-checkout-form='payment']")
+      );
       break;
     case "review":
       contentArea.innerHTML = renderReviewStep();
@@ -430,8 +441,8 @@ export function updateStepIndicator(activeStep) {
   });
 }
 
-// ===== VALIDATION =====
-function validateStep(step, form) {
+// ===== FORM VALIDATION =====
+function validateStep(form) {
   if (!form) return false;
 
   if (!form.checkValidity()) {
@@ -439,23 +450,33 @@ function validateStep(step, form) {
     return false;
   }
 
-  if (step === "shipping") {
-    return (
-      form.querySelector("[name=firstName]")?.value &&
-      form.querySelector("[name=lastName]")?.value &&
-      form.querySelector("[name=address]")?.value &&
-      form.querySelector("[name=city]")?.value &&
-      form.querySelector("[name=zip]")?.value &&
-      form.querySelector("[name=email]")?.value
-    );
-  }
-  if (step === "payment") {
-    return (
-      form.querySelector("[name=cardNumber]")?.value &&
-      form.querySelector("[name=expiryDate]")?.value &&
-      form.querySelector("[name=cvc]")?.value
-    );
-  }
-
   return true;
+}
+
+// Validation Styles
+const INVALID_CLASS = "border-red-500 focus:ring-red-500";
+const VALID_CLASS = "border-green-500 focus:ring-green-500";
+
+function attachLiveValidation(formElement) {
+  if (!formElement) return;
+
+  const inputs = formElement.querySelectorAll("input, select, textarea");
+
+  inputs.forEach((input) => {
+    input.addEventListener("input", () => {
+      if (input.checkValidity()) {
+        input.classList.remove(...INVALID_CLASS.split(" "));
+        input.classList.add(...VALID_CLASS.split(" "));
+      } else {
+        input.classList.remove(...VALID_CLASS.split(" "));
+        input.classList.add(...INVALID_CLASS.split(" "));
+      }
+    });
+
+    input.addEventListener("blur", () => {
+      if (!input.checkValidity()) {
+        input.reportValidity();
+      }
+    });
+  });
 }
