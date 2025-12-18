@@ -21,6 +21,7 @@ const cartItemsContainer = document.querySelector(
 );
 const cartTotalElement = document.querySelector("[data-cart-total]");
 const cartCountElement = document.querySelector("[data-cart-quantity]");
+const cartItemCountElement = document.querySelector("[data-cart-item-count]");
 
 // ===== INITIALIZE PAGE =====
 function init() {
@@ -57,7 +58,7 @@ function init() {
 
 // ===== CART UPDATE =====
 function updateCart() {
-  renderCartQuantity(cartCountElement, getCartQuantity());
+  renderCartQuantity(cartCountElement, cartItemCountElement, getCartQuantity());
 
   if (!cartItemsContainer || !cartTotalElement) {
     console.warn("Cart container elements not found for renderCart");
