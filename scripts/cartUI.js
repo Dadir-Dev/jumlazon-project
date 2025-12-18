@@ -67,10 +67,17 @@ export function renderCart(cartItemsContainer, cartTotalElement, cartDetails) {
 }
 
 // Cart quantity display
-export function renderCartQuantity(cartCountElement, quantity) {
+export function renderCartQuantity(
+  cartCountElement,
+  cartItemCountElement,
+  quantity
+) {
   if (!cartCountElement) {
     console.error("[data-cart-quantity] not found");
     return;
   }
   cartCountElement.textContent = quantity;
+  if (cartItemCountElement) {
+    cartItemCountElement.textContent = `(${quantity} items)`;
+  }
 }
