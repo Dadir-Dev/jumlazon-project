@@ -4,6 +4,7 @@ import { getCartDetails, getCartTotalPrice } from "./cart.js";
 const CHECKOUT_STORAGE_KEY = "jumlazon_checkout_v1";
 let checkoutData = {
   shipping: {},
+  delivery: { option: "standard", cost: 0 },
   payment: { method: "card" },
 };
 
@@ -156,6 +157,35 @@ function renderShippingStep() {
           >
         </div>
       </form>
+    
+      <!-- Delivery Option -->
+      <div class="mt-6 pt-4">
+        <h4 class="font-bold mb-3">Delivery Option</h4>
+        
+        <label class="flex items-center justify-between p-3 border rounded-md mb-2 cursor-pointer hover:bg-gray-50 focus-within:ring-2 focus-within:ring-indigo-300">
+          <div class="flex items-center">
+            <input type="radio" name="delivery-option" value="standard" class="mr-3" 
+              ${checkoutData.delivery.option === "standard" ? "checked" : ""}>
+            <div>
+              <div class="font-medium">Standard Delivery</div>
+              <div  class="text-sm text-gray-500">Estimated 5–7 business days</div>
+            </div>
+          </div>
+          <div class="font-bold text-blue-600">$5.99</div>
+        </label>
+
+        <label class="flex items-center justify-between p-3 border rounded-md mb-2 cursor-pointer hover:bg-gray-50 focus-within:ring-2 focus-within:ring-indigo-300">
+          <div class="flex items-center">
+            <input type="radio" name="delivery-option" value="express" class="mr-3"
+              ${checkoutData.delivery.option === "express" ? "checked" : ""}>
+            <div>
+              <div class="font-medium">Express Delivery</div>
+              <div class="text-sm text-gray-500">Estimated 2–3 business days</div>
+            </div>
+          </div>
+          <div class="font-bold">$12.99</div>
+        </label>
+      </div>
       
       <!-- Navigation -->
       <div class="flex justify-end pt-6">
@@ -442,14 +472,17 @@ export function updateStepIndicator(activeStep) {
 }
 
 // ===== FORM VALIDATION =====
-function validateStep(form) {
-  if (!form) return false;
+// Pure, testable
+export function isFormValid(form) {
+  return !!form && form.checkValidity();
+}
 
-  if (!form.checkValidity()) {
-    form.reportValidity();
+// UI concern
+export function validateStep(form) {
+  if (!isFormValid(form)) {
+    form?.reportValidity?.();
     return false;
   }
-
   return true;
 }
 
