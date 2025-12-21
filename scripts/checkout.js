@@ -4,12 +4,17 @@ import { getCartDetails, getCartTotalPrice } from "./cart.js";
 const CHECKOUT_STORAGE_KEY = "jumlazon_checkout_v1";
 let checkoutData = {
   shipping: {},
-  delivery: { option: "standard", cost: 0 },
+  delivery: { option: "standard", cost: 5.99, minDays: 5, maxDays: 7 },
   payment: { method: "card" },
+};
+const DELIVERY_OPTIONS = {
+  standard: { cost: 5.99, minDays: 5, maxDays: 7 },
+  express: { cost: 12.99, minDays: 2, maxDays: 3 },
 };
 
 function saveCheckoutToLocalStorage() {
   localStorage.setItem(CHECKOUT_STORAGE_KEY, JSON.stringify(checkoutData));
+  console.log("checkoutData", checkoutData);
 }
 
 function loadCheckoutFromLocalStorage() {
@@ -34,27 +39,7 @@ function renderShippingStep() {
 
   return `
     <div class="space-y-6">
-      <!-- Order Summary -->
-      <div class="bg-gray-50 p-4 rounded-lg">
-        <h3 class="font-bold mb-3">Order Summary</h3>
-        ${cartDetails
-          .map(
-            (item) => `
-          <div class="flex justify-between text-sm mb-2">
-            <span>${item.product.name} × ${item.quantity}</span>
-            <span>$${(item.product.price * item.quantity).toFixed(2)}</span>
-          </div>
-        `
-          )
-          .join("")}
-        <div class="border-t pt-3 mt-3">
-          <div class="flex justify-between font-bold">
-            <span>Total</span>
-            <span>$${totalPrice.toFixed(2)}</span>
-          </div>
-        </div>
-      </div>
-      
+
       <!-- Shipping Form -->
       <form class="space-y-4" data-checkout-form="shipping">
         <h3 class="font-bold">Shipping Information</h3>
@@ -168,7 +153,9 @@ function renderShippingStep() {
               ${checkoutData.delivery.option === "standard" ? "checked" : ""}>
             <div>
               <div class="font-medium">Standard Delivery</div>
-              <div  class="text-sm text-gray-500">Estimated 5–7 business days</div>
+              <div  class="text-sm text-gray-500">Estimated ${
+                DELIVERY_OPTIONS.standard.minDays
+              }–${DELIVERY_OPTIONS.standard.maxDays} business days</div>
             </div>
           </div>
           <div class="font-bold text-blue-600">$5.99</div>
@@ -180,11 +167,34 @@ function renderShippingStep() {
               ${checkoutData.delivery.option === "express" ? "checked" : ""}>
             <div>
               <div class="font-medium">Express Delivery</div>
-              <div class="text-sm text-gray-500">Estimated 2–3 business days</div>
+              <div class="text-sm text-gray-500">Estimated ${
+                DELIVERY_OPTIONS.express.minDays
+              }–${DELIVERY_OPTIONS.express.maxDays} business days</div>
             </div>
           </div>
           <div class="font-bold">$12.99</div>
         </label>
+      </div>
+
+      <!-- Order Summary -->
+      <div class="bg-gray-50 p-4 rounded-lg">
+        <h3 class="font-bold mb-3">Order Summary</h3>
+        ${cartDetails
+          .map(
+            (item) => `
+          <div class="flex justify-between text-sm mb-2">
+            <span>${item.product.name} × ${item.quantity}</span>
+            <span>$${(item.product.price * item.quantity).toFixed(2)}</span>
+          </div>
+        `
+          )
+          .join("")}
+        <div class="border-t pt-3 mt-3">
+          <div class="flex justify-between font-bold">
+            <span>Total</span>
+            <span>$${totalPrice.toFixed(2)}</span>
+          </div>
+        </div>
       </div>
       
       <!-- Navigation -->
@@ -512,4 +522,19 @@ function attachLiveValidation(formElement) {
       }
     });
   });
+}
+
+export function setDeliveryOption(option) {
+  if (!DELIVERY_OPTIONS.hasOwnProperty(option)) {
+    console.warn(`Invalid delivery option: ${option}`);
+    return;
+  }
+  checkoutData.delivery = {
+    option,
+    cost: DELIVERY_OPTIONS[option].cost,
+    minDays: DELIVERY_OPTIONS[option].minDays,
+    maxDays: DELIVERY_OPTIONS[option].maxDays,
+  };
+
+  saveCheckoutToLocalStorage();
 }
