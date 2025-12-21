@@ -12,6 +12,7 @@ import {
   initCheckout,
   saveAndProceed,
   navigateCheckoutStep,
+  setDeliveryOption,
 } from "./checkout.js";
 
 // ===== GLOBAL DOM Elements =====
@@ -113,6 +114,14 @@ function initCheckoutEventListeners() {
     if (prevStepBtn) {
       const step = prevStepBtn.dataset.prevStep;
       navigateCheckoutStep(step);
+    }
+  });
+
+  // Delivery Option
+  document.body.addEventListener("change", (e) => {
+    const deliveryOption = e.target.closest('input[name="delivery-option"]');
+    if (deliveryOption) {
+      setDeliveryOption(deliveryOption.value);
     }
   });
 }
