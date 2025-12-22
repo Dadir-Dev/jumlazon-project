@@ -1,4 +1,5 @@
 import { getCartDetails, getCartTotalPrice } from "./cart.js";
+// import dayjs from "../node_modules/dayjs";
 
 // ===== STATE — all checkout data is stored here ====
 const CHECKOUT_STORAGE_KEY = "jumlazon_checkout_v1";
@@ -172,7 +173,14 @@ function renderShippingStep() {
           </div>
           <div class="font-bold">$12.99</div>
         </label>
+          ${
+            checkoutData.delivery
+              ? `<div class="text-sm font-bold">Deliver Date: <span data-delivery-date class="text-blue-600"> ${checkoutData.delivery.deliveryStartDate} - ${checkoutData.delivery.deliveryEndDate}</div>`
+              : ""
+          }
       </div>
+
+      <!-- Order Summary -->
       <div data-order-summary></div>
       
       <!-- Navigation -->
@@ -508,11 +516,24 @@ export function setDeliveryOption(option) {
     console.warn(`Invalid delivery option: ${option}`);
     return;
   }
+
+  const today = dayjs();
+
+  const deliveryStartDate = today
+    .add(DELIVERY_OPTIONS[option].minDays, "day")
+    .format("MMM D");
+
+  const deliveryEndDate = today
+    .add(DELIVERY_OPTIONS[option].maxDays, "day")
+    .format("MMM D");
+
   checkoutData.delivery = {
     option,
     cost: DELIVERY_OPTIONS[option].cost,
     minDays: DELIVERY_OPTIONS[option].minDays,
     maxDays: DELIVERY_OPTIONS[option].maxDays,
+    deliveryStartDate,
+    deliveryEndDate,
   };
 
   saveCheckoutToLocalStorage();
