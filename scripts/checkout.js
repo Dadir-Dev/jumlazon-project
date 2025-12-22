@@ -31,8 +31,6 @@ function loadCheckoutFromLocalStorage() {
 
 // ===== Step 1: Shipping Form =====
 function renderShippingStep() {
-  const cartDetails = getCartDetails();
-  const totalPrice = getCartTotalPrice();
   const shippingData = checkoutData.shipping;
 
   // We use values from checkoutData to pre-fill the inputs if they exist
@@ -175,27 +173,7 @@ function renderShippingStep() {
           <div class="font-bold">$12.99</div>
         </label>
       </div>
-
-      <!-- Order Summary -->
-      <div class="bg-gray-50 p-4 rounded-lg">
-        <h3 class="font-bold mb-3">Order Summary</h3>
-        ${cartDetails
-          .map(
-            (item) => `
-          <div class="flex justify-between text-sm mb-2">
-            <span>${item.product.name} × ${item.quantity}</span>
-            <span>$${(item.product.price * item.quantity).toFixed(2)}</span>
-          </div>
-        `
-          )
-          .join("")}
-        <div class="border-t pt-3 mt-3">
-          <div class="flex justify-between font-bold">
-            <span>Total</span>
-            <span>$${totalPrice.toFixed(2)}</span>
-          </div>
-        </div>
-      </div>
+      <div data-order-summary></div>
       
       <!-- Navigation -->
       <div class="flex justify-end pt-6">
@@ -405,6 +383,7 @@ export function initCheckout() {
 
   // Start with shipping step
   contentArea.innerHTML = renderShippingStep();
+  updateOrderSummary();
   updateStepIndicator("shipping");
   // Attach live validation for the initially rendered shipping form
   attachLiveValidation(
@@ -537,4 +516,51 @@ export function setDeliveryOption(option) {
   };
 
   saveCheckoutToLocalStorage();
+  updateOrderSummary();
+}
+
+function getDeliveryCost() {
+  return checkoutData.delivery.cost;
+}
+
+function getOrderTotal() {
+  return getCartTotalPrice() + getDeliveryCost();
+}
+
+function getOrderSummaryHTML() {
+  const cartDetails = getCartDetails();
+  const totalPrice = getOrderTotal();
+  return `
+  <!-- Order Summary -->
+      <div class="bg-gray-50 p-4 rounded-lg">
+        <h3 class="font-bold mb-3">Order Summary</h3>
+        ${cartDetails
+          .map(
+            (item) => `
+          <div class="flex justify-between text-sm mb-2">
+            <span>${item.product.name} × ${item.quantity}</span>
+            <span>$${(item.product.price * item.quantity).toFixed(2)}</span>
+          </div>
+        `
+          )
+          .join("")}
+          <div class="flex justify-between text-sm mb-2">
+            <span>Delivery</span>
+            <span>$${getDeliveryCost().toFixed(2)}</span>
+          </div>
+        <div class="border-t pt-3 mt-3">
+          <div class="flex justify-between font-bold">
+            <span>Total</span>
+            <span>$${totalPrice.toFixed(2)}</span>
+          </div>
+        </div>
+      </div>
+  `;
+}
+
+export function updateOrderSummary() {
+  const container = document.querySelector("[data-order-summary]");
+  if (!container) return;
+
+  container.innerHTML = getOrderSummaryHTML();
 }
