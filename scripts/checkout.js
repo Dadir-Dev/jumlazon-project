@@ -173,11 +173,6 @@ function renderShippingStep() {
           </div>
           <div class="font-bold">$12.99</div>
         </label>
-          ${
-            checkoutData.delivery
-              ? `<div class="text-sm font-bold">Deliver Date: <span data-delivery-date class="text-blue-600"> ${checkoutData.delivery.deliveryStartDate} - ${checkoutData.delivery.deliveryEndDate}</div>`
-              : ""
-          }
       </div>
 
       <!-- Order Summary -->
@@ -551,6 +546,7 @@ function getOrderTotal() {
 function getOrderSummaryHTML() {
   const cartDetails = getCartDetails();
   const totalPrice = getOrderTotal();
+  const delivery = checkoutData.delivery;
   return `
   <!-- Order Summary -->
       <div class="bg-gray-50 p-4 rounded-lg">
@@ -569,6 +565,19 @@ function getOrderSummaryHTML() {
             <span>Delivery</span>
             <span>$${getDeliveryCost().toFixed(2)}</span>
           </div>
+          ${
+            delivery.deliveryStartDate
+              ? `
+            <div class="flex justify-between text-sm mt-1">
+              Arrives between 
+              <span class="font-medium text-blue-600">
+                ${delivery.deliveryStartDate} – ${delivery.deliveryEndDate}
+              </span>
+            </div>
+          `
+              : ""
+          }
+
         <div class="border-t pt-3 mt-3">
           <div class="flex justify-between font-bold">
             <span>Total</span>
@@ -579,7 +588,7 @@ function getOrderSummaryHTML() {
   `;
 }
 
-export function updateOrderSummary() {
+function updateOrderSummary() {
   const container = document.querySelector("[data-order-summary]");
   if (!container) return;
 
