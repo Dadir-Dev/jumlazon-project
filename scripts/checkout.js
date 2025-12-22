@@ -402,6 +402,7 @@ export function navigateCheckoutStep(step) {
   switch (step) {
     case "shipping":
       contentArea.innerHTML = renderShippingStep();
+      updateOrderSummary();
       attachLiveValidation(
         contentArea.querySelector("[data-checkout-form='shipping']")
       );
