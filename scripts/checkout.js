@@ -515,25 +515,26 @@ export function setDeliveryOption(option) {
 
   const today = dayjs();
 
-  const deliveryStartDate = today
-    .add(DELIVERY_OPTIONS[option].minDays, "day")
-    .format("MMM D");
+  if (today) {
+    const deliveryStartDate = today
+      .add(DELIVERY_OPTIONS[option].minDays, "day")
+      .format("MMM D");
 
-  const deliveryEndDate = today
-    .add(DELIVERY_OPTIONS[option].maxDays, "day")
-    .format("MMM D");
+    const deliveryEndDate = today
+      .add(DELIVERY_OPTIONS[option].maxDays, "day")
+      .format("MMM D");
 
-  checkoutData.delivery = {
-    option,
-    cost: DELIVERY_OPTIONS[option].cost,
-    minDays: DELIVERY_OPTIONS[option].minDays,
-    maxDays: DELIVERY_OPTIONS[option].maxDays,
-    deliveryStartDate,
-    deliveryEndDate,
-  };
+    checkoutData.delivery = {
+      option,
+      cost: DELIVERY_OPTIONS[option].cost,
+      minDays: DELIVERY_OPTIONS[option].minDays,
+      maxDays: DELIVERY_OPTIONS[option].maxDays,
+      deliveryStartDate,
+      deliveryEndDate,
+    };
+  }
 
   saveCheckoutToLocalStorage();
-  updateOrderSummary();
 }
 
 function getDeliveryCost() {
@@ -589,7 +590,7 @@ function getOrderSummaryHTML() {
   `;
 }
 
-function updateOrderSummary() {
+export function updateOrderSummary() {
   const container = document.querySelector("[data-order-summary]");
   if (!container) return;
 

@@ -13,6 +13,7 @@ import {
   saveAndProceed,
   navigateCheckoutStep,
   setDeliveryOption,
+  updateOrderSummary,
 } from "./checkout.js";
 
 // ===== GLOBAL DOM Elements =====
@@ -122,6 +123,7 @@ function initCheckoutEventListeners() {
     const deliveryOption = e.target.closest('input[name="delivery-option"]');
     if (deliveryOption) {
       setDeliveryOption(deliveryOption.value);
+      updateOrderSummary();
     }
   });
 }
