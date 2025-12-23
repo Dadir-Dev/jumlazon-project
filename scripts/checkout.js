@@ -315,7 +315,13 @@ function renderReviewStep() {
         </div>
       
       <!-- Navigation -->
-      <div class="flex justify-end pt-6">
+      <div class="flex justify-between pt-6">
+        <button 
+          class="px-6 py-3 border rounded-lg hover:bg-gray-50 transition duration-300"
+          data-prev-step="payment"
+        >
+          ← Back
+        </button>
         <button 
           class="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition duration-300"
           data-next-step="review"
