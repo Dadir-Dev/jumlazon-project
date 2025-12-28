@@ -4,8 +4,8 @@ import { products } from "../data/products.js";
 // ===== Cart Management Functions =====
 const CART_STORAGE_KEY = "jumlazon_cart_v1";
 
-function saveCartToLocalStorage() {
-  localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
+export function saveCartToLocalStorage(storage = globalThis.localStorage) {
+  storage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
 }
 
 function loadCartFromLocalStorage() {
