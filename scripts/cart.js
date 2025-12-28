@@ -50,7 +50,6 @@ export function addToCart(productId, dropdownquantity = 1) {
     });
   }
   saveCartToLocalStorage();
-  console.log(cart);
 }
 
 export function removeFromCart(productId) {
