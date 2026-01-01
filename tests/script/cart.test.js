@@ -34,4 +34,14 @@ describe("addToCart", () => {
 
     expect(cart).toEqual([{ productId: 2, quantity: 8 }]);
   });
+
+  test("adds two different products", () => {
+    addToCart(3, 3);
+    addToCart(4, 4);
+
+    expect(cart).toEqual([
+      { productId: 3, quantity: 3 },
+      { productId: 4, quantity: 4 },
+    ]);
+  });
 });
