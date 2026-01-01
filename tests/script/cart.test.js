@@ -28,7 +28,7 @@ describe("addToCart", () => {
     expect(cart).toEqual([{ productId: 1, quantity: 3 }]);
   });
 
-  test("adds existing products to cart", () => {
+  test("increases quantity if product already exists", () => {
     addToCart(2, 5);
     addToCart(2, 3);
 
