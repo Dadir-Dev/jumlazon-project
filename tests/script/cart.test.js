@@ -1,5 +1,6 @@
-import { describe, jest } from "@jest/globals";
+import { beforeEach, describe, expect, jest } from "@jest/globals";
 import { addToCart, saveCartToLocalStorage } from "../../scripts/cart.js";
+import { cart } from "../../data/cartData.js";
 
 describe("saveCartToLocalStorage", () => {
   it("should save cart to local storage", async () => {
@@ -15,5 +16,15 @@ describe("saveCartToLocalStorage", () => {
       "jumlazon_cart_v1",
       JSON.stringify([{ productId: 1, quantity: 2 }])
     );
+  });
+});
+
+describe("addToCart", () => {
+  beforeEach(() => {
+    cart.length = 0;
+  });
+  test("adds a new product to the cart", () => {
+    addToCart(1, 3);
+    expect(cart).toEqual([{ productId: 1, quantity: 3 }]);
   });
 });
