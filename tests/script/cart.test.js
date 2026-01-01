@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, jest } from "@jest/globals";
+import { beforeEach, describe, expect, jest, test } from "@jest/globals";
 import { addToCart, saveCartToLocalStorage } from "../../scripts/cart.js";
 import { cart } from "../../data/cartData.js";
 
@@ -23,8 +23,15 @@ describe("addToCart", () => {
   beforeEach(() => {
     cart.length = 0;
   });
-  test("adds a new product to the cart", () => {
+  test("adds a new product to cart", () => {
     addToCart(1, 3);
     expect(cart).toEqual([{ productId: 1, quantity: 3 }]);
+  });
+
+  test("adds existing products to cart", () => {
+    addToCart(2, 5);
+    addToCart(2, 3);
+
+    expect(cart).toEqual([{ productId: 2, quantity: 8 }]);
   });
 });
