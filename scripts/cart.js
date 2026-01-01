@@ -100,3 +100,17 @@ export function getCartTotalPrice() {
 export function getCartQuantity() {
   return cart.reduce((total, item) => total + item.quantity, 0);
 }
+
+function newAddToCart(cart, productId, quantity) {
+  const matchingItem = cart.find((item) => item.productId === productId);
+
+  if (matchingItem) {
+    return cart.map((item) =>
+      item.productId === productId
+        ? { ...item, quantity: item.quantity + quantity }
+        : item
+    );
+  }
+
+  return [...cart, { productId, quantity }];
+}
