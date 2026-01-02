@@ -56,4 +56,12 @@ describe("addToCartPure", () => {
     const updatedCart = addToCartPure(cart, 1, 3);
     expect(updatedCart).toEqual([{ productId: 1, quantity: 3 }]);
   });
+
+  test("increments quantity if item exists", () => {
+    const cart = [{ productId: 3, quantity: 3 }];
+    const updatedCart = addToCartPure(cart, 3, 7);
+
+    expect(updatedCart).toEqual([{ productId: 3, quantity: 10 }]);
+    expect(cart).toEqual([{ productId: 3, quantity: 3 }]); //  immutable
+  });
 });
