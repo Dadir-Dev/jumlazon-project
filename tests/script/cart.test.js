@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, jest, test } from "@jest/globals";
+import { jest } from "@jest/globals";
 import { addToCart, saveCartToLocalStorage } from "../../scripts/cart.js";
 import { cart } from "../../data/cartData.js";
 
