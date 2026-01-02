@@ -101,7 +101,7 @@ export function getCartQuantity() {
   return cart.reduce((total, item) => total + item.quantity, 0);
 }
 
-function newAddToCart(cart, productId, quantity) {
+function AddToCartPure(cart, productId, quantity) {
   const matchingItem = cart.find((item) => item.productId === productId);
 
   if (matchingItem) {
@@ -113,4 +113,9 @@ function newAddToCart(cart, productId, quantity) {
   }
 
   return [...cart, { productId, quantity }];
+}
+
+function getCartFromStorage() {
+  const stored = localStorage.getItem(CART_STORAGE_KEY);
+  return stored ? JSON.parse(stored) : [];
 }
