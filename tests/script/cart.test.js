@@ -3,6 +3,7 @@ import {
   addToCart,
   saveCartToLocalStorage,
   addToCartPure,
+  removeFromCartPure,
 } from "../../scripts/cart.js";
 import { cart } from "../../data/cartData.js";
 
@@ -63,5 +64,17 @@ describe("addToCartPure", () => {
 
     expect(updatedCart).toEqual([{ productId: 3, quantity: 10 }]);
     expect(cart).toEqual([{ productId: 3, quantity: 3 }]); //  immutable
+  });
+});
+
+describe("removeFromCartPure", () => {
+  test("removes an item by productId", () => {
+    const cart = [
+      { productId: 1, quantity: 2 },
+      { productId: 2, quantity: 1 },
+    ];
+    const updatedCart = removeFromCartPure(cart, 1);
+
+    expect(updatedCart).toEqual([{ productId: 2, quantity: 1 }]);
   });
 });
