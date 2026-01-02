@@ -77,4 +77,11 @@ describe("removeFromCartPure", () => {
 
     expect(updatedCart).toEqual([{ productId: 2, quantity: 1 }]);
   });
+
+  test("returns same cart if product does not exist", () => {
+    const cart = [{ productIda: 3, quantity: 4 }];
+    const result = removeFromCartPure(cart, 5);
+
+    expect(result).toEqual([{ productIda: 3, quantity: 4 }]);
+  });
 });
