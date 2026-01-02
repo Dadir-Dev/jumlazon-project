@@ -1,5 +1,9 @@
-import { jest } from "@jest/globals";
-import { addToCart, saveCartToLocalStorage } from "../../scripts/cart.js";
+import { describe, jest } from "@jest/globals";
+import {
+  addToCart,
+  saveCartToLocalStorage,
+  addToCartPure,
+} from "../../scripts/cart.js";
 import { cart } from "../../data/cartData.js";
 
 describe("saveCartToLocalStorage", () => {
@@ -43,5 +47,13 @@ describe("addToCart", () => {
       { productId: 3, quantity: 3 },
       { productId: 4, quantity: 4 },
     ]);
+  });
+});
+
+describe("addToCartPure", () => {
+  test("adds new item to empty cart", () => {
+    const cart = [];
+    const updatedCart = addToCartPure(cart, 1, 3);
+    expect(updatedCart).toEqual([{ productId: 1, quantity: 3 }]);
   });
 });

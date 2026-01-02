@@ -101,7 +101,7 @@ export function getCartQuantity() {
   return cart.reduce((total, item) => total + item.quantity, 0);
 }
 
-function AddToCartPure(cart, productId, quantity) {
+export function addToCartPure(cart, productId, quantity) {
   const matchingItem = cart.find((item) => item.productId === productId);
 
   if (matchingItem) {
