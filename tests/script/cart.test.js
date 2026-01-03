@@ -7,7 +7,6 @@ import {
   updateQuantityPure,
 } from "../../scripts/cart.js";
 import { cart } from "../../data/cartData.js";
-import { test } from "picomatch";
 
 describe("saveCartToLocalStorage", () => {
   it("should save cart to local storage", async () => {
