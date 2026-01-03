@@ -131,6 +131,10 @@ export function updateQuantityPure(cart, productId, change) {
   });
 }
 
+function getCartQuantityPure(cart) {
+  return cart.reduce((total, item) => total + item.quantity, 0);
+}
+
 function getCartFromStorage() {
   const stored = localStorage.getItem(CART_STORAGE_KEY);
   return stored ? JSON.parse(stored) : [];
