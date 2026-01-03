@@ -106,6 +106,19 @@ describe("updateQuantityPure", () => {
     // original cart remains unchanged
     expect(cart[0].quantity).toBe(5);
 
+    // decremented new cart
     expect(descrementedCart[0].quantity).toBe(4);
+  });
+
+  test("does not decrement quantity below 1", () => {
+    const cart = [{ productId: 4, quantity: 1 }];
+    const updatedCart = updateQuantityPure(cart, 4, -1);
+    expect(updatedCart[0].quantity).toBe(1);
+  });
+
+  test("returns same cart if productId not found", () => {
+    const cart = [{ productId: 6, quantity: 2 }];
+    const updatedCart = updateQuantityPure(cart, 10, 1);
+    expect(updatedCart).toEqual(cart);
   });
 });
