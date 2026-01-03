@@ -76,6 +76,7 @@ describe("removeFromCartPure", () => {
     const updatedCart = removeFromCartPure(cart, 1);
 
     expect(updatedCart).toEqual([{ productId: 2, quantity: 1 }]);
+    expect(cart.length).toBe(2); // immutability check
   });
 
   test("returns same cart if product does not exist", () => {
