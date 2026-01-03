@@ -4,8 +4,10 @@ import {
   saveCartToLocalStorage,
   addToCartPure,
   removeFromCartPure,
+  updateQuantityPure,
 } from "../../scripts/cart.js";
 import { cart } from "../../data/cartData.js";
+import { test } from "picomatch";
 
 describe("saveCartToLocalStorage", () => {
   it("should save cart to local storage", async () => {
@@ -84,5 +86,27 @@ describe("removeFromCartPure", () => {
     const result = removeFromCartPure(cart, 5);
 
     expect(result).toEqual([{ productIda: 3, quantity: 4 }]);
+  });
+});
+
+describe("updateQuantityPure", () => {
+  test("increments item quantity", () => {
+    const cart = [{ productId: 2, quantity: 2 }];
+    const updatedCart = updateQuantityPure(cart, 2, 1);
+
+    // original cart remains unchanged
+    expect(cart[0].quantity).toBe(2);
+    // incremented new cart
+    expect(updatedCart[0].quantity).toBe(3);
+  });
+
+  test("descrements item quantity", () => {
+    const cart = [{ productId: 1, quantity: 5 }];
+    const descrementedCart = updateQuantityPure(cart, 1, -1);
+
+    // original cart remains unchanged
+    expect(cart[0].quantity).toBe(5);
+
+    expect(descrementedCart[0].quantity).toBe(4);
   });
 });
