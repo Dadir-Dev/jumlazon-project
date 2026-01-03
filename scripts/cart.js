@@ -119,6 +119,18 @@ export function removeFromCartPure(cart, productId) {
   return cart.filter((item) => item.productId !== productId);
 }
 
+export function updateQuantityPure(cart, productId, change) {
+  return cart.map((item) => {
+    if (item.productId !== productId) return item;
+
+    const newQuantity = item.quantity + change;
+    return {
+      ...item,
+      quantity: newQuantity < 1 ? 1 : newQuantity,
+    };
+  });
+}
+
 function getCartFromStorage() {
   const stored = localStorage.getItem(CART_STORAGE_KEY);
   return stored ? JSON.parse(stored) : [];
