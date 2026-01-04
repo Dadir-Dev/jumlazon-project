@@ -5,6 +5,7 @@ import {
   addToCartPure,
   removeFromCartPure,
   updateQuantityPure,
+  getCartQuantityPure,
 } from "../../scripts/cart.js";
 import { cart } from "../../data/cartData.js";
 
@@ -120,5 +121,19 @@ describe("updateQuantityPure", () => {
     const cart = [{ productId: 6, quantity: 2 }];
     const updatedCart = updateQuantityPure(cart, 10, 1);
     expect(updatedCart).toEqual(cart);
+  });
+});
+
+describe("getCartQuantityPure", () => {
+  test("returns total quantity in cart", () => {
+    const cart = [
+      { productId: 1, quantity: 2 },
+      { productId: 3, quantity: 4 },
+      { productId: 5, quantity: 6 },
+    ];
+
+    const totalQuantity = getCartQuantityPure(cart);
+
+    expect(totalQuantity).toBe(12);
   });
 });

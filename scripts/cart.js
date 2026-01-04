@@ -150,7 +150,7 @@ export function updateQuantityPure(cart, productId, change) {
   });
 }
 
-function getCartQuantityPure(cart) {
+export function getCartQuantityPure(cart) {
   return cart.reduce((total, item) => total + item.quantity, 0);
 }
 
