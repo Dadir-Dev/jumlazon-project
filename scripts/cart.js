@@ -27,6 +27,7 @@ export function initCart() {
   loadCartFromLocalStorage();
 }
 
+/*
 export function addToCart(productId, dropdownquantity = 1) {
   // Ensure quantity is a valid number
   const quantity = Number(dropdownquantity);
@@ -49,6 +50,24 @@ export function addToCart(productId, dropdownquantity = 1) {
       quantity,
     });
   }
+  saveCartToLocalStorage();
+}
+*/
+
+export function addToCart(productId, dropdownquantity = 1) {
+  // Ensure quantity is a valid number
+  const quantity = Number(dropdownquantity);
+  if (isNaN(quantity) || quantity <= 0) {
+    console.warn(`Invalid quantity: ${quantity}`);
+    return;
+  }
+
+  const currentCart = cart;
+  const updatedCart = addToCartPure(currentCart, productId, quantity);
+
+  cart.length = 0;
+  cart.push(...updatedCart);
+
   saveCartToLocalStorage();
 }
 
