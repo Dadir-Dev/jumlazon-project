@@ -1,4 +1,4 @@
-import { describe, jest } from "@jest/globals";
+import { describe, expect, jest } from "@jest/globals";
 import {
   addToCart,
   saveCartToLocalStorage,
@@ -135,5 +135,20 @@ describe("getCartQuantityPure", () => {
     const totalQuantity = getCartQuantityPure(cart);
 
     expect(totalQuantity).toBe(12);
+  });
+
+  test("edge case: returns 0 for an empty cart", () => {
+    const cart = [];
+    const totalQuantity = getCartQuantityPure(cart);
+
+    expect(totalQuantity).toBe(0);
+  });
+
+  test("does not mutate the cart", () => {
+    const cart = [{ productId: 1, quantity: 2 }];
+
+    getCartQuantityPure(cart);
+
+    expect(cart).toEqual([{ productId: 1, quantity: 2 }]);
   });
 });
