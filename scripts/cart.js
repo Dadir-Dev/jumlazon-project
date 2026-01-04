@@ -139,3 +139,10 @@ function getCartFromStorage() {
   const stored = localStorage.getItem(CART_STORAGE_KEY);
   return stored ? JSON.parse(stored) : [];
 }
+
+function getCartTotalPricePure(cart, product) {
+  return cart.reduce((total, item) => {
+    const product = products.find((p) => p.id === item.productId);
+    return total + (product ? product.price * item.quantity : 0);
+  }, 0);
+}
