@@ -159,7 +159,7 @@ function getCartFromStorage() {
   return stored ? JSON.parse(stored) : [];
 }
 
-function getCartTotalPricePure(cart, product) {
+export function getCartTotalPricePure(cart, products) {
   return cart.reduce((total, item) => {
     const product = products.find((p) => p.id === item.productId);
     return total + (product ? product.price * item.quantity : 0);

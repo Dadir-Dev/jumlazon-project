@@ -6,6 +6,7 @@ import {
   removeFromCartPure,
   updateQuantityPure,
   getCartQuantityPure,
+  getCartTotalPricePure,
 } from "../../scripts/cart.js";
 import { cart } from "../../data/cartData.js";
 
@@ -150,5 +151,41 @@ describe("getCartQuantityPure", () => {
     getCartQuantityPure(cart);
 
     expect(cart).toEqual([{ productId: 1, quantity: 2 }]);
+  });
+});
+
+describe("getCartTotalPricePure", () => {
+  const products = [
+    { id: 1, name: "Laptop", price: 1000 },
+    { id: 2, name: "Mouse", price: 50 },
+    { id: 3, name: "Keyboard", price: 150 },
+  ];
+
+  test("returns 0 for an empty cart", () => {
+    const cart = [];
+    const totalPrice = getCartTotalPricePure(cart, products);
+
+    expect(totalPrice).toBe(0);
+  });
+
+  test("calculates total price correctly", () => {
+    const cart = [
+      { productId: 1, quantity: 1 }, // 1000
+      { productId: 2, quantity: 1 }, // 50
+    ];
+
+    const totalPrice = getCartTotalPricePure(cart, products);
+
+    expect(totalPrice).toBe(1050);
+  });
+
+  test("handles multiple quantities correctly", () => {
+    const cart = [
+      { productId: 1, quantity: 2 }, // 1000 * 2 = 2000
+      { productId: 3, quantity: 3 }, // 150 * 3 = 450
+    ];
+
+    const totalPrice = getCartTotalPricePure(cart, products);
+    expect(totalPrice).toBe(2450);
   });
 });
