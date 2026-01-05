@@ -188,4 +188,28 @@ describe("getCartTotalPricePure", () => {
     const totalPrice = getCartTotalPricePure(cart, products);
     expect(totalPrice).toBe(2450);
   });
+
+  test("edge case: ignores cart items with missing products", () => {
+    const cart = [
+      { productId: 1, quantity: 2 }, // 1000 * 2 = 2000
+      { productId: 99, quantity: 3 }, // product not found
+    ];
+
+    const totalPrice = getCartTotalPricePure(cart, products);
+
+    expect(totalPrice).toBe(2000);
+  });
+
+  test("edge case: does not mutate cart or products", () => {
+    const cart = [{ productId: 3, quantity: 4 }];
+
+    getCartTotalPricePure(cart, products);
+
+    expect(cart).toEqual([{ productId: 3, quantity: 4 }]);
+    expect(products).toEqual([
+      { id: 1, name: "Laptop", price: 1000 },
+      { id: 2, name: "Mouse", price: 50 },
+      { id: 3, name: "Keyboard", price: 150 },
+    ]);
+  });
 });
