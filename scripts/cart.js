@@ -137,7 +137,7 @@ export function getCartTotalPrice() {
 
 // Get total quantity of items in cart
 export function getCartQuantity() {
-  return cart.reduce((total, item) => total + item.quantity, 0);
+  return getCartQuantityPure(cart);
 }
 
 export function addToCartPure(cart, productId, quantity) {
