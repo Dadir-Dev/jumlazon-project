@@ -68,6 +68,7 @@ export function addToCart(productId, dropdownquantity = 1) {
   cart.splice(0, cart.length, ...newCart);
 
   saveCartToLocalStorage();
+  return cart;
 }
 
 /*
@@ -90,6 +91,7 @@ export function removeFromCart(productId) {
   cart.splice(0, cart.length, ...newCart);
 
   saveCartToLocalStorage();
+  return cart;
 }
 
 // Get cart details with product information
@@ -126,6 +128,7 @@ export function updateQuantity(productId, change) {
   cart.splice(0, cart.length, ...newCart);
 
   saveCartToLocalStorage();
+  return cart;
 }
 
 export function getCartTotalPrice() {
