@@ -103,6 +103,7 @@ export function getCartDetails() {
   });
 }
 
+/*
 // change = 1 or -1
 export function updateQuantity(productId, change) {
   const item = cart.find((item) => item.productId === productId);
@@ -113,6 +114,16 @@ export function updateQuantity(productId, change) {
   } else if (change === -1 && item.quantity > 1) {
     item.quantity--;
   }
+
+  saveCartToLocalStorage();
+}
+*/
+
+export function updateQuantity(productId, change) {
+  const newCart = updateQuantityPure(cart, productId, change);
+
+  // Replace contents of the existing array without reassigning the imported binding
+  cart.splice(0, cart.length, ...newCart);
 
   saveCartToLocalStorage();
 }
