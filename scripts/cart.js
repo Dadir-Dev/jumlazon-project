@@ -129,10 +129,7 @@ export function updateQuantity(productId, change) {
 }
 
 export function getCartTotalPrice() {
-  return cart.reduce((total, item) => {
-    const product = products.find((p) => p.id === item.productId);
-    return total + (product ? product.price * item.quantity : 0);
-  }, 0);
+  return getCartTotalPricePure(cart, products);
 }
 
 // Get total quantity of items in cart
