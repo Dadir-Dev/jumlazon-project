@@ -62,15 +62,15 @@ export function addToCart(productId, dropdownquantity = 1) {
     return;
   }
 
-  const currentCart = cart;
-  const updatedCart = addToCartPure(currentCart, productId, quantity);
-
-  cart.length = 0;
-  cart.push(...updatedCart);
+  // Compute new cart immutably, then mutate the imported `cart` array
+  const newCart = addToCartPure(cart, productId, quantity);
+  // Replace contents of the existing array without reassigning the imported binding
+  cart.splice(0, cart.length, ...newCart);
 
   saveCartToLocalStorage();
 }
 
+/*
 export function removeFromCart(productId) {
   const index = cart.findIndex((item) => item.productId === productId);
   if (index === -1) {
@@ -80,6 +80,15 @@ export function removeFromCart(productId) {
     return;
   }
   cart.splice(index, 1);
+  saveCartToLocalStorage();
+}
+  */
+
+export function removeFromCart(productId) {
+  const newCart = removeFromCartPure(cart, productId);
+  // Replace contents of the existing array without reassigning the imported binding
+  cart.splice(0, cart.length, ...newCart);
+
   saveCartToLocalStorage();
 }
 
