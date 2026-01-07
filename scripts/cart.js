@@ -8,6 +8,11 @@ export function saveCartToLocalStorage(storage = globalThis.localStorage) {
   storage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
 }
 
+// Mutable API object to allow tests to spy on storage calls
+export const cartAPI = {
+  saveCartToLocalStorage,
+};
+
 function loadCartFromLocalStorage() {
   const cartData = localStorage.getItem(CART_STORAGE_KEY);
   if (!cartData) return;
@@ -67,7 +72,7 @@ export function addToCart(productId, dropdownquantity = 1) {
   // Replace contents of the existing array without reassigning the imported binding
   cart.splice(0, cart.length, ...newCart);
 
-  saveCartToLocalStorage();
+  cartAPI.saveCartToLocalStorage();
   return cart;
 }
 
@@ -90,7 +95,7 @@ export function removeFromCart(productId) {
   // Replace contents of the existing array without reassigning the imported binding
   cart.splice(0, cart.length, ...newCart);
 
-  saveCartToLocalStorage();
+  cartAPI.saveCartToLocalStorage();
   return cart;
 }
 
@@ -127,7 +132,7 @@ export function updateQuantity(productId, change) {
   // Replace contents of the existing array without reassigning the imported binding
   cart.splice(0, cart.length, ...newCart);
 
-  saveCartToLocalStorage();
+  cartAPI.saveCartToLocalStorage();
   return cart;
 }
 
