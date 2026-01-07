@@ -1,6 +1,5 @@
-import { describe, expect, jest } from "@jest/globals";
+import { beforeEach, describe, expect, jest } from "@jest/globals";
 import {
-  addToCart,
   saveCartToLocalStorage,
   addToCartPure,
   removeFromCartPure,
@@ -9,6 +8,7 @@ import {
   getCartTotalPricePure,
 } from "../../scripts/cart.js";
 import { cart } from "../../data/cartData.js";
+import * as cartModule from "../../scripts/cart.js";
 
 describe("saveCartToLocalStorage", () => {
   it("should save cart to local storage", async () => {
@@ -16,7 +16,7 @@ describe("saveCartToLocalStorage", () => {
 
     const mockStorage = { setItem: mockSetItem, getItem: () => null };
 
-    addToCart(1, 2);
+    cartModule.addToCart(1, 2);
     // Inject mock storage when calling the function in the test
     saveCartToLocalStorage(mockStorage);
 
@@ -24,33 +24,6 @@ describe("saveCartToLocalStorage", () => {
       "jumlazon_cart_v1",
       JSON.stringify([{ productId: 1, quantity: 2 }])
     );
-  });
-});
-
-describe("addToCart", () => {
-  beforeEach(() => {
-    cart.length = 0;
-  });
-  test("adds a new product to cart", () => {
-    addToCart(1, 3);
-    expect(cart).toEqual([{ productId: 1, quantity: 3 }]);
-  });
-
-  test("increases quantity if product already exists", () => {
-    addToCart(2, 5);
-    addToCart(2, 3);
-
-    expect(cart).toEqual([{ productId: 2, quantity: 8 }]);
-  });
-
-  test("adds two different products", () => {
-    addToCart(3, 3);
-    addToCart(4, 4);
-
-    expect(cart).toEqual([
-      { productId: 3, quantity: 3 },
-      { productId: 4, quantity: 4 },
-    ]);
   });
 });
 
@@ -211,5 +184,49 @@ describe("getCartTotalPricePure", () => {
       { id: 2, name: "Mouse", price: 50 },
       { id: 3, name: "Keyboard", price: 150 },
     ]);
+  });
+});
+
+describe("addToCart", () => {
+  beforeEach(() => {
+    cart.length = 0;
+    jest.restoreAllMocks();
+  });
+  test("adds a new product to cart", () => {
+    cartModule.addToCart(1, 3);
+    expect(cart).toEqual([{ productId: 1, quantity: 3 }]);
+  });
+
+  test("increases quantity if product already exists", () => {
+    cartModule.addToCart(2, 5);
+    cartModule.addToCart(2, 3);
+
+    expect(cart).toEqual([{ productId: 2, quantity: 8 }]);
+  });
+
+  test("adds two different products", () => {
+    cartModule.addToCart(3, 3);
+    cartModule.addToCart(4, 4);
+
+    expect(cart).toEqual([
+      { productId: 3, quantity: 3 },
+      { productId: 4, quantity: 4 },
+    ]);
+  });
+});
+
+describe("addToCart side effects", () => {
+  beforeEach(() => {
+    cart.length = 0;
+    jest.resetAllMocks();
+  });
+
+  test("calls saveCartToLocalStorage once", () => {
+    const spy = jest.spyOn(cartModule.cartAPI, "saveCartToLocalStorage");
+
+    cartModule.addToCart(1, 2);
+
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(cart).toEqual([{ productId: 1, quantity: 2 }]);
   });
 });
