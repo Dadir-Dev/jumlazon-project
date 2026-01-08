@@ -230,3 +230,16 @@ describe("addToCart side effects", () => {
     expect(cart).toEqual([{ productId: 1, quantity: 2 }]);
   });
 });
+
+describe("removeFromCart", () => {
+  beforeEach(() => {
+    cart.length = 0;
+    jest.resetAllMocks();
+  });
+  test("removes product from cart", () => {
+    cart.push({ productId: 1, quantity: 3 }, { productId: 4, quantity: 4 });
+
+    cartModule.removeFromCart(1);
+    expect(cart).toEqual([{ productId: 4, quantity: 4 }]);
+  });
+});
