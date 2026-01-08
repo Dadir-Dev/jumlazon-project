@@ -242,4 +242,11 @@ describe("removeFromCart", () => {
     cartModule.removeFromCart(1);
     expect(cart).toEqual([{ productId: 4, quantity: 4 }]);
   });
+
+  test("edge case: returns same cart if product does not exist", () => {
+    cart.push({ productId: 3, quantity: 3 });
+
+    cartModule.removeFromCart(99);
+    expect(cart).toEqual([{ productId: 3, quantity: 3 }]);
+  });
 });
