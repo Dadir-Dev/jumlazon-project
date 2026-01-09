@@ -265,16 +265,34 @@ describe("updateQuantity", () => {
     cart.length = 0;
     jest.resetAllMocks();
   });
+
   test("increments given item's quantity", () => {
     cart.push({ productId: 2, quantity: 5 });
     cartModule.updateQuantity(2, 1);
 
     expect(cart).toEqual([{ productId: 2, quantity: 6 }]);
   });
+
   test("decrements given item's quantity", () => {
     cart.push({ productId: 2, quantity: 5 });
     cartModule.updateQuantity(2, -1);
 
     expect(cart).toEqual([{ productId: 2, quantity: 4 }]);
+  });
+
+  test("edge case: quantity does not go below 1", () => {
+    cart.push({ productId: 5, quantity: 1 });
+    cartModule.updateQuantity(5, -1);
+
+    expect(cart).toEqual([{ productId: 5, quantity: 1 }]);
+  });
+
+  test("persists cart after update", () => {
+    const spy = jest.spyOn(cartModule.cartAPI, "saveCartToLocalStorage");
+    cart.push({ productId: 1, quantity: 2 });
+    cartModule.updateQuantity(1, 1);
+
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(cart).toEqual([{ productId: 1, quantity: 3 }]);
   });
 });
