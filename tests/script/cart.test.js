@@ -249,4 +249,13 @@ describe("removeFromCart", () => {
     cartModule.removeFromCart(99);
     expect(cart).toEqual([{ productId: 3, quantity: 3 }]);
   });
+
+  test("persists cart after removal", () => {
+    const spy = jest.spyOn(cartModule.cartAPI, "saveCartToLocalStorage");
+    cart.push({ productId: 2, quantity: 5 });
+
+    cartModule.removeFromCart(2);
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(cart).toEqual([]);
+  });
 });
