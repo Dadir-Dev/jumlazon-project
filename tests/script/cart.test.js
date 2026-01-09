@@ -259,3 +259,22 @@ describe("removeFromCart", () => {
     expect(cart).toEqual([]);
   });
 });
+
+describe("updateQuantity", () => {
+  beforeEach(() => {
+    cart.length = 0;
+    jest.resetAllMocks();
+  });
+  test("increments given item's quantity", () => {
+    cart.push({ productId: 2, quantity: 5 });
+    cartModule.updateQuantity(2, 1);
+
+    expect(cart).toEqual([{ productId: 2, quantity: 6 }]);
+  });
+  test("decrements given item's quantity", () => {
+    cart.push({ productId: 2, quantity: 5 });
+    cartModule.updateQuantity(2, -1);
+
+    expect(cart).toEqual([{ productId: 2, quantity: 4 }]);
+  });
+});
