@@ -263,7 +263,7 @@ describe("removeFromCart", () => {
 describe("updateQuantity", () => {
   beforeEach(() => {
     cart.length = 0;
-    jest.resetAllMocks();
+    jest.restoreAllMocks();
   });
 
   test("increments given item's quantity", () => {
