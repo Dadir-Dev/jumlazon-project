@@ -1,6 +1,7 @@
+// use Jest's `test` from @jest/globals (avoid accidental picomatch import)
 import { cart } from "../../data/cartData.js";
 import * as cartModule from "../../scripts/cart.js";
-import { beforeEach, describe, expect, jest } from "@jest/globals";
+import { beforeEach, describe, expect, jest, test } from "@jest/globals";
 
 describe("cart integration flow", () => {
   beforeEach(() => {
@@ -27,5 +28,19 @@ describe("cart integration flow", () => {
 
     // 5. Persistence side effect
     expect(persistSpy).toHaveBeenCalled();
+  });
+
+  test("edge case: removing the only item leaves cart empty", () => {
+    cartModule.addToCart(1, 5);
+    cartModule.removeFromCart(1);
+
+    expect(cart).toEqual([]);
+  });
+
+  test("does not modify cart when updating unknown productId", () => {
+    cartModule.addToCart(2, 3);
+    cartModule.updateQuantity(99, 1);
+
+    expect(cart).toEqual([{ productId: 2, quantity: 3 }]);
   });
 });
