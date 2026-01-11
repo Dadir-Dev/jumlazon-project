@@ -18,7 +18,7 @@ describe("cart integration flow", () => {
 
     // 2. Update quantities
     cartModule.updateQuantity(4, -1); // product 4 x4
-    cartModule.updateQuantity(2, 1); // product 4 x4
+    cartModule.updateQuantity(1, 1); // product 4 x4
 
     // 3. Remove product
     cartModule.removeFromCart(1); //
