@@ -1,5 +1,27 @@
 // ===== Products Data =====
-export const products = [
+export let products = [];
+
+// Fetch products from API and update local state
+export async function loadProducts() {
+  try {
+    const response = await fetch("https://supersimplebackend.dev/products");
+
+    if (!response.ok) {
+      throw new Error(`HTTP error: ${response.status}`);
+    }
+
+    const data = await response.json();
+    products = data;
+
+    return products;
+  } catch (error) {
+    console.error("Failed to load products:", error);
+    products = [];
+    throw error;
+  }
+}
+
+/* export const products = [
   {
     id: 1,
     name: "Black and Gray Athletic Cotton Socks - 6 Pairs",
@@ -52,4 +74,4 @@ export const products = [
       "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
     category: "Electronics",
   },
-];
+]; */
