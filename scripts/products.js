@@ -1,4 +1,4 @@
-import { loadProducts } from "../data/products.js";
+import { products } from "../data/products.js";
 
 // ===== Render products =====
 function renderProducts(container) {
@@ -74,16 +74,10 @@ function renderProducts(container) {
     .join("");
 }
 
-export async function initProducts(productsContainer, onAddToCart) {
+export function initProducts(productsContainer, onAddToCart) {
   if (!productsContainer) return;
 
-  try {
-    await loadProducts();
-    renderProducts(productsContainer);
-  } catch {
-    productsContainer.innerHTML =
-      "<p class='text-red-500'>Failed to load products.</p>";
-  }
+  renderProducts(productsContainer);
 
   // Store all timeouts here (outside the event listener)
   const addedMessageTimeouts = {};
