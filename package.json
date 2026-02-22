@@ -70,7 +70,9 @@
     "util-deprecate": "^1.0.2"
   },
   "scripts": {
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --env=jsdom"
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --env=jsdom",
+    "build:css": "tailwindcss -i ./src/input.css -o ./styles/jumlazon.css --minify",
+    "build": "npm run build:css"
   },
   "jest": {
     "testEnvironment": "jsdom"
