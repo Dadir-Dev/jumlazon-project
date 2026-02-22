@@ -160,9 +160,11 @@ document.addEventListener("DOMContentLoaded", function () {
   const searchButton = document.querySelector(".js-search-toggle");
   const mobileSearch = document.getElementById("mobileSearch");
 
-  searchButton.addEventListener("click", function () {
-    mobileSearch.classList.toggle("hidden");
-  });
+  if (searchButton && mobileSearch) {
+    searchButton.addEventListener("click", function () {
+      mobileSearch.classList.toggle("hidden");
+    });
+  }
 });
 
 // Add cart toggle functionality
@@ -179,10 +181,12 @@ function initCartToggle() {
     if (cartOverlay) cartOverlay.classList.remove("hidden");
   });
 
-  closeCartButton.addEventListener("click", () => {
-    cartContainer.classList.add("hidden");
-    if (cartOverlay) cartOverlay.classList.add("hidden");
-  });
+  if (closeCartButton) {
+    closeCartButton.addEventListener("click", () => {
+      cartContainer.classList.add("hidden");
+      if (cartOverlay) cartOverlay.classList.add("hidden");
+    });
+  }
 
   if (cartOverlay) {
     cartOverlay.addEventListener("click", () => {
