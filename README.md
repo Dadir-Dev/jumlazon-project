@@ -137,8 +137,8 @@ Tests cover:
 
 ## 📸 Screenshots
 
-| Homepage | Cart | Checkout |
-| :------: | :--: | :------: |
+|              Homepage               |              Cart               |                Checkout                 |
+| :---------------------------------: | :-----------------------------: | :-------------------------------------: |
 | ![Homepage](./screenshots/home.png) | ![Cart](./screenshots/cart.png) | ![Checkout](./screenshots/checkout.png) |
 
 ---
@@ -161,11 +161,12 @@ This project is licensed under the **ISC License**.
 
 ## 📬 Contacts
 
-| Channel     | Link                                                                 |
-| ----------- | -------------------------------------------------------------------- |
-| **GitHub**  | [@Dir-Dev](https://github.com/Dadir-Dev)                             |
-| **Issues**  | [Report a bug](https://github.com/Dadir-Dev/jumlazon-project/issues) |
-| **Project** | [jumlazon-project](https://github.com/Dadir-Dev/jumlazon-project)    |
+| Channel      | Link                                                                             |
+| ------------ | -------------------------------------------------------------------------------- |
+| **GitHub**   | [@Dadir-Dev](https://github.com/Dadir-Dev)                                       |
+| **LinkedIn** | [@Abdikadir Mohammed](https://www.linkedin.com/in/abdikadir-mohammed-54717318b/) |
+| **Issues**   | [Report a bug](https://github.com/Dadir-Dev/jumlazon-project/issues)             |
+| **Project**  | [jumlazon-project](https://github.com/Dadir-Dev/jumlazon-project)                |
 
 ---
 
