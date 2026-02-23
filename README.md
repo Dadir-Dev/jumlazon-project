@@ -161,12 +161,12 @@ This project is licensed under the **ISC License**.
 
 ## 📬 Contacts
 
-| Channel      | Link                                                                             |
-| ------------ | -------------------------------------------------------------------------------- |
-| **GitHub**   | [@Dadir-Dev](https://github.com/Dadir-Dev)                                       |
-| **LinkedIn** | [@Abdikadir Mohammed](https://www.linkedin.com/in/abdikadir-mohammed-54717318b/) |
-| **Issues**   | [Report a bug](https://github.com/Dadir-Dev/jumlazon-project/issues)             |
-| **Project**  | [jumlazon-project](https://github.com/Dadir-Dev/jumlazon-project)                |
+| Channel                                                                   | Link                                                                             |
+| ------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| **GitHub**                                                                | [@Dadir-Dev](https://github.com/Dadir-Dev)                                       |
+| **LinkedIn**                                                              | [@Abdikadir Mohammed](https://www.linkedin.com/in/abdikadir-mohammed-54717318b/) |
+| **Issues**                                                                | [Report a bug](https://github.com/Dadir-Dev/jumlazon-project/issues)             |
+| ![GitHub Repo](https://img.shields.io/badge/github-repo-blue?logo=github) | [jumlazon-project](https://github.com/Dadir-Dev/jumlazon-project)                |
 
 ---
 
